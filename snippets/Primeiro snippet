@@ -1,0 +1,41 @@
+todos_horarios_pontos = document.querySelectorAll("td:nth-child(2)")
+todos_horarios_aulas = document.querySelectorAll("td.ifms-code")
+char_eh_aula = []
+todos_horarios_aulas.forEach((element) => char_eh_aula.push(element.innerText[34]))
+console.log(char_eh_aula)
+
+// string_horario_entrada = []
+// for(i in todos_horarios_pontos){
+//     if(char_eh_aula[i] == 'A'){
+//         string_horario_entrada.push([parseInt(todos_horarios_pontos[i].textContent.split('E')[1].split('S')[0].split(':')[1]),parseInt(todos_horarios_pontos[i].textContent.split('E')[1].split('S')[0].split(':')[2])])
+//     }
+// }
+// console.log(string_horario_entrada)
+
+string_horario_entrada = []
+for(i in todos_horarios_pontos){
+    if(char_eh_aula[i] == 'A'){
+        string_horario_entrada.push(todos_horarios_pontos[i].textContent.split('E')[todos_horarios_pontos[i].textContent.split('E').length-1].split('S'))
+    }
+}
+console.log(string_horario_entrada)
+
+// todos_horarios_aulas = document.querySelectorAll("td.ifms-code")
+// pegaPrimeiroUltimoHorarioAula(todos_horarios_aulas)
+
+// function pegaPrimeiroUltimoHorarioAula(horarios_aula){
+//     char_eh_aula = []
+//     horarios_aula.forEach((element) => char_eh_aula.push(element.innerText[34]))
+//     horarios_separados = []
+//     for(i in char_eh_aula){
+//         if(char_eh_aula[i] == 'A'){
+//             horarios_separados.push(horarios_aula[i].innerText.split("PAT")[0].split("AULA")[1].split("PE")[0].split(' '))        
+//         }
+//     }
+
+//     primeiro_e_ultimo_horario = []
+//     for(i in horarios_separados){
+//         primeiro_e_ultimo_horario.push([horarios_separados[i][1],horarios_separados[i][horarios_separados.length-2]])
+//     }
+//     return primeiro_e_ultimo_horario
+// }
