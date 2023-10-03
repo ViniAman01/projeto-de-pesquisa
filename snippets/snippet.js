@@ -91,4 +91,21 @@ for(i = 0; i < 13; i++){
             }
         }
     }
+    if(horarios_entrada_saida_ponto_int[i][1][0] == -1){
+        console.log("Ponto de saida não registrado.")
+    }else{
+        if(horarios_entrada_saida_ponto_int[i][1][0] < horarios_inicio_fim_aula_int[i][1][0]){
+            console.log("Ponto de saida antes do horario de fim de aula.")
+        }else{
+            if(horarios_entrada_saida_ponto_int[i][1][0] == horarios_inicio_fim_aula_int[i][1][0] && horarios_entrada_saida_ponto_int[i][1][1] < horarios_inicio_fim_aula_int[i][1][1]){
+                console.log("Ponto de saida antes do horario de fim de aula.")
+            }else{
+                if(horarios_entrada_saida_ponto_int[i][1][1] == horarios_inicio_fim_aula_int[i][1][1] && horarios_entrada_saida_ponto_int[i][1][2] == 0){
+                    console.log("Ponto de saida no exato horario do fim da aula.")
+                }else{
+                    console.log("Ponto de saida depois do horario de fim de aula.")    
+                }
+            }
+        }
+    }
 }
