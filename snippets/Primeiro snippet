@@ -1,41 +1,70 @@
-todos_horarios_pontos = document.querySelectorAll("td:nth-child(2)")
-todos_horarios_aulas = document.querySelectorAll("td.ifms-code")
+todos_horarios_pontos_td = document.querySelectorAll("td:nth-child(2)")
+todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code")
 char_eh_aula = []
-todos_horarios_aulas.forEach((element) => char_eh_aula.push(element.innerText[34]))
-console.log(char_eh_aula)
+todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]))
 
-// string_horario_entrada = []
-// for(i in todos_horarios_pontos){
-//     if(char_eh_aula[i] == 'A'){
-//         string_horario_entrada.push([parseInt(todos_horarios_pontos[i].textContent.split('E')[1].split('S')[0].split(':')[1]),parseInt(todos_horarios_pontos[i].textContent.split('E')[1].split('S')[0].split(':')[2])])
-//     }
-// }
-// console.log(string_horario_entrada)
-
-string_horario_entrada = []
-for(i in todos_horarios_pontos){
+horario_ponto_entrada_int = []
+for(i in todos_horarios_pontos_td){
     if(char_eh_aula[i] == 'A'){
-        string_horario_entrada.push(todos_horarios_pontos[i].textContent.split('E')[todos_horarios_pontos[i].textContent.split('E').length-1].split('S'))
+        horarios_ponto_string = todos_horarios_pontos_td[i].innerText
+        horarios_ponto_string_split = horarios_ponto_string.split('\n')
+        
+        horario_entrada_string = horarios_ponto_string_split[0].split('E:')[1]
+        horario_entrada_string_split = horario_entrada_string.split(':')
+        
+        horas_entrada_string = horario_entrada_string_split[0] 
+        minutos_entrada_string = horario_entrada_string_split[1]
+        segundos_entrada_string = horario_entrada_string_split[2]
+       
+        horas_entrada_int = parseInt(horas_entrada_string)
+        minutos_entrada_int = parseInt(minutos_entrada_string)
+        segundos_entrada_int = parseInt(segundos_entrada_string)
+
+
+        horarios_ponto
+
+        
+        
+        horario_ponto_entrada_int.push([horas_entrada_int,minutos_entrada_int,segundos_entrada_int])
     }
 }
-console.log(string_horario_entrada)
 
-// todos_horarios_aulas = document.querySelectorAll("td.ifms-code")
-// pegaPrimeiroUltimoHorarioAula(todos_horarios_aulas)
+console.log(horario_ponto_entrada_int)
 
-// function pegaPrimeiroUltimoHorarioAula(horarios_aula){
-//     char_eh_aula = []
-//     horarios_aula.forEach((element) => char_eh_aula.push(element.innerText[34]))
-//     horarios_separados = []
-//     for(i in char_eh_aula){
-//         if(char_eh_aula[i] == 'A'){
-//             horarios_separados.push(horarios_aula[i].innerText.split("PAT")[0].split("AULA")[1].split("PE")[0].split(' '))        
-//         }
+// horarios_aula_separados = []
+// for(i in char_eh_aula){
+//     if(char_eh_aula[i] == 'A'){
+//         horarios_aula_separados.push(todos_horarios_aulas_td[i].innerText.split("PAT")[0].split("AULA")[1].split("PE")[0].split(' '))        
 //     }
-
-//     primeiro_e_ultimo_horario = []
-//     for(i in horarios_separados){
-//         primeiro_e_ultimo_horario.push([horarios_separados[i][1],horarios_separados[i][horarios_separados.length-2]])
-//     }
-//     return primeiro_e_ultimo_horario
 // }
+
+// console.log(horarios_aula_separados)
+
+// string_primeiro_e_ultimo_horario_aula = []
+// for(i in horarios_aula_separados){
+//     horario_entrada = horarios_aula_separados[i][1]
+//     horario_saida = horarios_aula_separados[i][horarios_aula_separados.length-2]
+//     string_primeiro_e_ultimo_horario_aula.push([horario_entrada,horario_saida])
+// }
+
+
+
+// int_primeiro_e_ultimo_horario_aula = []
+// for(i in string_primeiro_e_ultimo_horario_aula){
+//     int_primeiro_e_ultimo_horario_aula.push([[parseInt(string_primeiro_e_ultimo_horario_aula[i][0][0].split(":")),parseInt(string_primeiro_e_ultimo_horario_aula[i][0][1].split(":"))],[parseInt(string_primeiro_e_ultimo_horario_aula[i][1][0].split(":")),parseInt(string_primeiro_e_ultimo_horario_aula[i][1][1].split(":"))]])
+// }
+
+// datas_aulas_coluna = document.querySelectorAll("td:nth-child(1)")
+// string_datas_aulas_coluna = []
+// for(i in datas_aulas_coluna){
+//     string_datas_aulas_coluna.push(datas_aulas_coluna[i].innerText)
+// }
+
+// datas_aulas = []
+// for(i in string_datas_aulas_coluna){
+//     if(char_eh_aula[i] == 'A'){
+//         datas_aulas.push(string_datas_aulas_coluna[i].split('\n')[0])
+//     }
+// }
+
+// console.log(int_primeiro_e_ultimo_horario_aula)
