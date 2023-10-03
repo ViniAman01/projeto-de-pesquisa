@@ -1,4 +1,5 @@
 todos_horarios_pontos_td = document.querySelectorAll("td:nth-child(2)")
+todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)")
 todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code")
 char_eh_aula = []
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]))
@@ -39,10 +40,8 @@ for(i in todos_horarios_pontos_td){
     }
 }
 
-console.log(horarios_entrada_saida_ponto_int)
-
 horarios_inicio_fim_aula_int = []
-for(i in char_eh_aula){
+for(i in todos_horarios_aulas_td){
     if(char_eh_aula[i] == 'A'){
         horarios_string = todos_horarios_aulas_td[i].innerText
         horarios_strings_split_por_pat = horarios_string.split('PAT')[0]
@@ -70,4 +69,26 @@ for(i in char_eh_aula){
     }
 }
 
-console.log(horarios_inicio_fim_aula_int)
+data_aula_strings = []
+for(i in todas_datas_aulas_td){
+    if(char_eh_aula[i] == 'A'){    
+        data_aula_strings.push(todas_datas_aulas_td[i].innerText.split('\n')[0])
+    }
+}
+
+for(i = 0; i < 13; i++){
+    console.log("Dia:",data_aula_strings[i],'\n')
+    if(horarios_entrada_saida_ponto_int[i][0][0] < horarios_inicio_fim_aula_int[i][0][0]){
+        console.log("Ponto de entrada antes do horario de inicio de aula.")
+    }else{
+        if(horarios_entrada_saida_ponto_int[i][0][0] == horarios_inicio_fim_aula_int[i][0][0] && horarios_entrada_saida_ponto_int[i][0][1] < horarios_inicio_fim_aula_int[i][0][1]){
+            console.log("Ponto de entrada antes do horario de inicio de aula.")
+        }else{
+            if(horarios_entrada_saida_ponto_int[i][0][1] == horarios_inicio_fim_aula_int[i][0][1] && horarios_entrada_saida_ponto_int[i][0][2] == 0){
+                console.log("Ponto de entrada no exato horario do inicio da aula.")
+            }else{
+                console.log("Ponto de entrada depois do horario de inicio de aula.")    
+            }
+        }
+    }
+}
