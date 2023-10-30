@@ -1,0 +1,50 @@
+todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)")
+todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code")
+char_eh_aula = []
+todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]))
+
+dia_semana_aula_strings = []
+indices_dia_semana = []
+
+for(i = 0; i < todas_datas_aulas_td.length; i++){
+    if(char_eh_aula[i] == 'A'){
+        data = todas_datas_aulas_td[i].innerText.split('\n')[2]
+        if(!dia_semana_aula_strings.includes(data)){
+            dia_semana_aula_strings.push(data)
+            indices_dia_semana.push(i)
+        }
+    }
+}
+
+console.log(dia_semana_aula_strings)
+
+horarios_inicio_fim_aula_int = []
+for(j in indices_dia_semana){
+    i = indices_dia_semana[j]
+      
+    horarios_string = todos_horarios_aulas_td[i].innerText
+    horarios_strings_split_por_pat = horarios_string.split('PAT')[0]
+    horarios_strings_split_por_aula = horarios_strings_split_por_pat.split('AULA:')[1]
+    horarios_strings_split_por_pe = horarios_strings_split_por_aula.split('PE:')[0]
+    
+    horarios_aulas_strings = horarios_strings_split_por_pe
+
+    horarios_inicio_fim_aulas_strings = horarios_aulas_strings.split('/')
+    horario_inicio_primeira_aula_string = horarios_inicio_fim_aulas_strings[0].split('-')[0]
+    horario_fim_ultima_aula_string = horarios_inicio_fim_aulas_strings[horarios_inicio_fim_aulas_strings.length-1].split('-')[1]
+
+    horas_inicio_primeira_aula_string = horario_inicio_primeira_aula_string.split(':')[0]
+    minutos_inicio_primeira_aula_string = horario_inicio_primeira_aula_string.split(':')[1]
+
+    horas_fim_ultima_aula_string = horario_fim_ultima_aula_string.split(':')[0]
+    minutos_fim_ultima_aula_string = horario_fim_ultima_aula_string.split(':')[1]
+
+    horas_inicio_primeira_aula_int = parseInt(horas_inicio_primeira_aula_string)
+    minutos_inicio_primeira_aula_int = parseInt(minutos_inicio_primeira_aula_string)
+    horas_fim_ultima_aula_int = parseInt(horas_fim_ultima_aula_string)
+    minutos_fim_ultima_aula_int = parseInt(minutos_fim_ultima_aula_string)
+    
+    horarios_inicio_fim_aula_int.push([[horas_inicio_primeira_aula_int,minutos_inicio_primeira_aula_int],[horas_fim_ultima_aula_int,minutos_fim_ultima_aula_int]])
+}
+
+console.log(horarios_inicio_fim_aula_int)
