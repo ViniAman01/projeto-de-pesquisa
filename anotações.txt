@@ -1,0 +1,9 @@
+Armazenar usando chrome.storage, os dias da semana e os respectivos horários de serviço.
+
+Exemplo de tabela de horários para ser apresentado.
+____________________________________________________________
+Seg            | Ter | Qua |  Qui           | Sex     | Sab |
+13 - 14        |     |     |  20:20 - 22:50 | 10 - 12 |     |
+19:35 - 21:05  |     |     |                | 14 - 16 |     |
+               |     |     |                | 19 - 22 |     |                   
+------------------------------------------------------------
