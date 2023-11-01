@@ -50,4 +50,7 @@ for(j in indices_dia_semana){
     intervalos_de_tempo_dias_semana.push(intervalos_de_tempo_dia);
 }
 
-console.log(intervalos_de_tempo_dias_semana);
+for(k in dia_semana_aula_strings){
+    console.log(dia_semana_aula_strings[k])
+    console.log(intervalos_de_tempo_dias_semana[k])
+}
