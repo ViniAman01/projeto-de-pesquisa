@@ -3,10 +3,7 @@
   "description": "Pegar informações de horário",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage"],
-  "background": {
-    "service_worker": "background.js"
-  },
+  "permissions": ["storage","activeTab"],
   "action": {
     "default_title": "SUAP",
     "default_popup": "popup.html"
