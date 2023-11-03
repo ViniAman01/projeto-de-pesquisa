@@ -3,13 +3,8 @@
   "description": "Pegar informações de horário",
   "version": "1.0",
   "manifest_version": 3,
-  "permissions": ["storage","activeTab"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
-    }
-  ],
+  "permissions": ["storage","activeTab","scripting"],
+  "host_permissions": ["<all_urls>"],
   "action": {
     "default_title": "SUAP",
     "default_popup": "popup.html"

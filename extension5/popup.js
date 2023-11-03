@@ -12,5 +12,4 @@ document.getElementById("getHtmlButton").addEventListener("click", function () {
 function getHTML() {
   const html = document.documentElement.outerHTML;
   console.log(html);
-  // Você pode fazer o que quiser com o HTML aqui
 }

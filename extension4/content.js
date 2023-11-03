@@ -2,6 +2,13 @@ todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)");
 todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
+dia = {
+    'Segunda-feira': 0,
+    'Terça-feira': 1,
+    'Quarta-feira': 2,
+    'Quinta-feira': 3,
+    'Sexta-feira': 4
+}
 
 dia_semana_aula_strings = [];
 indices_dia_semana = [];
@@ -46,8 +53,8 @@ for(j in indices_dia_semana){
             intervalos_de_tempo_dia.splice(k+1,1);
             }        
         }
-
-    intervalos_de_tempo_dias_semana.push(intervalos_de_tempo_dia);
+    intervalos_de_tempo_dias_semana.push([dia[dia_semana_aula_strings[j]],intervalos_de_tempo_dia]);
 }
-    
-chrome.storage.sync.set({'teste': intervalos_de_tempo_dias_semana});
+
+console.log(intervalos_de_tempo_dias_semana)
+chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana})
