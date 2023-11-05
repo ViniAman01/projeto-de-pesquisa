@@ -2,12 +2,12 @@ document.getElementById("btnComeco").addEventListener("click", function (event) 
         chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
         const activeTab = tabs[0];
 
-        if(Object.values(await chrome.storage.sync.get(['intervalos'])).length == 0){
+        // if(Object.values(await chrome.storage.sync.get(['intervalos'])).length == 0){
             await chrome.scripting.executeScript({
                 target: { tabId: activeTab.id },
                 files: ["content.js"],
             });
-        }
+        // }
         
         const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
         const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];
