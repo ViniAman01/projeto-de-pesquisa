@@ -56,5 +56,4 @@ for(j in indices_dia_semana){
     intervalos_de_tempo_dias_semana.push([dia[dia_semana_aula_strings[j]],intervalos_de_tempo_dia]);
 }
 
-console.log(intervalos_de_tempo_dias_semana)
 chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana})

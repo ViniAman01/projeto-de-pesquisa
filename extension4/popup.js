@@ -2,13 +2,15 @@ document.getElementById("btnComeco").addEventListener("click", function (event) 
         chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
         const activeTab = tabs[0];
 
-        chrome.scripting.executeScript({
-            target: { tabId: activeTab.id },
-            files: ["content.js"],
-        });
+        if(Object.values(await chrome.storage.sync.get(['intervalos'])).length == 0){
+            await chrome.scripting.executeScript({
+                target: { tabId: activeTab.id },
+                files: ["content.js"],
+            });
+        }
         
         const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
-        const valores_dias_intervalos = objeto_dias_intervalos['intervalos']
+        const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];
         const tabela = document.getElementById("tabelaIntervalos");
         
         numero_de_linhas = 0;
@@ -18,8 +20,6 @@ document.getElementById("btnComeco").addEventListener("click", function (event) 
             }
         }
 
-        console.log(numero_de_linhas);
-        
         celulas = [];
         for(n = 0; n < numero_de_linhas; n++){
             linha = tabela.insertRow();
@@ -36,8 +36,6 @@ document.getElementById("btnComeco").addEventListener("click", function (event) 
             for(indice_intervalo in intervalos_do_dia){
                 inicio_horario = intervalos_do_dia[indice_intervalo][0];
                 fim_horario = intervalos_do_dia[indice_intervalo][1];
-
-                console.log(dia_semana + ':' + inicio_horario);
 
                 celulas[indice_intervalo][dia_semana].textContent = inicio_horario + ' - ' + fim_horario;
             }
