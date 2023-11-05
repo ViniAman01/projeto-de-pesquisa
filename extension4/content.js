@@ -49,7 +49,7 @@ for(j in indices_dia_semana){
 
     for(k = 0; k < intervalos_de_tempo_dia.length-1; k++){
         if(intervalos_de_tempo_dia[k][1] == intervalos_de_tempo_dia[k+1][0]){
-            intervalos_de_tempo_dia[k][1] == intervalos_de_tempo_dia[k+1][1];
+            intervalos_de_tempo_dia[k][1] = intervalos_de_tempo_dia[k+1][1];
             intervalos_de_tempo_dia.splice(k+1,1);
             }        
         }
