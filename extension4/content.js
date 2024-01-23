@@ -40,19 +40,18 @@ for(j in indices_dia_semana){
     intervalos_de_tempo_dia = [];
 
     indice_intervalos_de_tempo_dia = 0;
+    index = 0;
     for(k in barra_split_horarios_strings){
         inicio_horario = barra_split_horarios_strings[k].split('-')[0];
         fim_horario = barra_split_horarios_strings[k].split('-')[1];
         
-        intervalos_de_tempo_dia.push([inicio_horario, fim_horario]);
-    }
-
-    for(k = 0; k < intervalos_de_tempo_dia.length-1; k++){
-        if(intervalos_de_tempo_dia[k][1] == intervalos_de_tempo_dia[k+1][0]){
-            intervalos_de_tempo_dia[k][1] = intervalos_de_tempo_dia[k+1][1];
-            intervalos_de_tempo_dia.splice(k+1,1);
-            }        
+        if(index != 0 && inicio_horario == intervalos_de_tempo_dia[index-1][1]){
+          intervalos_de_tempo_dia[index-1][1] = fim_horario;
+        }else{
+          intervalos_de_tempo_dia.push([inicio_horario, fim_horario]);
+          index++;
         }
+    }
     intervalos_de_tempo_dias_semana.push([dia[dia_semana_aula_strings[j]],intervalos_de_tempo_dia]);
 }
 
