@@ -9,14 +9,14 @@
 
 <table id="minhaTabela" border="1">
   <tr>
-    <td contenteditable="true">Valor 1</td>
-    <td contenteditable="true">Valor 2</td>
-    <td contenteditable="true">Valor 3</td>
+    <td >13:01</td>
+    <td >13:02</td>
+    <td >13:03</td>
   </tr>
   <tr>
-    <td contenteditable="true">Valor 4</td>
-    <td contenteditable="true">Valor 5</td>
-    <td contenteditable="true">Valor 6</td>
+    <td >13:04</td>
+    <td >13:05</td>
+    <td >13:06</td>
   </tr>
 </table>
 
@@ -30,7 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Adiciona evento de clique nas células da tabela para torná-las editáveis
   tabela.addEventListener('click', function(event) {
     if (event.target.tagName === 'TD') {
-      event.target.setAttribute('contenteditable', 'true');
+      const input = document.createElement("input")
+      input.setAttribute('type','time')
+      input.value = event.target.innerText
+      event.target.appendChild(input)
+      // event.target.setAttribute('contenteditable', 'true');
     }
   });
 
