@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabela Editável</title>
+</head>
+<body>
+
+<table id="minhaTabela" border="1">
+  <tr>
+    <td contenteditable="true">Valor 1</td>
+    <td contenteditable="true">Valor 2</td>
+    <td contenteditable="true">Valor 3</td>
+  </tr>
+  <tr>
+    <td contenteditable="true">Valor 4</td>
+    <td contenteditable="true">Valor 5</td>
+    <td contenteditable="true">Valor 6</td>
+  </tr>
+</table>
+
+<button id="submitBtn">Submeter</button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var tabela = document.getElementById('minhaTabela');
+  var submitBtn = document.getElementById('submitBtn');
+
+  // Adiciona evento de clique nas células da tabela para torná-las editáveis
+  tabela.addEventListener('click', function(event) {
+    if (event.target.tagName === 'TD') {
+      event.target.setAttribute('contenteditable', 'true');
+    }
+  });
+
+  // Adiciona evento de clique no botão de submissão
+  submitBtn.addEventListener('click', function() {
+    var tableData = [];
+
+    // Loop pelas linhas da tabela
+    for (var i = 0; i < tabela.rows.length; i++) {
+      var rowData = [];
+
+      // Loop pelas células de cada linha
+      for (var j = 0; j < tabela.rows[i].cells.length; j++) {
+        // Armazena o texto da célula no array
+        rowData.push(tabela.rows[i].cells[j].textContent);
+      }
+
+      // Adiciona os dados da linha ao array principal
+      tableData.push(rowData);
+    }
+
+    // Aqui você pode enviar os dados para o servidor usando Ajax
+    console.log(tableData); // Exibe os dados no console para demonstração
+    alert('Dados submetidos com sucesso!');
+  });
+});
+</script>
+
+</body>
+</html>
