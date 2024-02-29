@@ -1,7 +1,10 @@
 todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)");
 todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
+todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
+
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
+
 dia = {
   'Segunda-feira': 0,
   'Terça-feira': 1,
@@ -56,3 +59,11 @@ for(j in indices_dia_semana){
 }
 
 chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana})
+
+function splitMultiDelimitadores(string,delimitadores){
+  strings = []
+  for(index in delimitadores)
+    string.forEach(e => string.push(e.split(delimitadores[index])))
+};
+
+horarios_entrada = []
