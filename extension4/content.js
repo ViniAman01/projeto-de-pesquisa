@@ -1,6 +1,7 @@
 todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)");
 todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
-todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
+
+//Parte responsavel por extrair os horarios e relacionar com os dias da semana
 
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
@@ -58,12 +59,29 @@ for(j in indices_dia_semana){
   intervalos_de_tempo_dias_semana.push([dia[dia_semana_aula_strings[j]],intervalos_de_tempo_dia]);
 }
 
-chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana})
+chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana});
 
-function splitMultiDelimitadores(string,delimitadores){
-  strings = []
-  for(index in delimitadores)
-    string.forEach(e => string.push(e.split(delimitadores[index])))
-};
+//Parte responsavel por extrair os horarios de e/s
 
-horarios_entrada = []
+todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)");
+
+for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
+  entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+  if(entrada_saida.length != 0){
+    horarios_entrada_saida = []
+    entrada_saida.forEach(e => {
+      aux = []
+      e.split(':').forEach(e2 => {
+        if(Number(e2)){
+          aux.push(Number(e2));
+        }
+      });
+      horarios_entrada_saida.push(aux);
+    }); 
+    // console.log(horarios_entrada_saida)
+    numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
+    let intervalos_do_dia;
+    intervalos_de_tempo_dias_semana.forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
+    console.log(intervalos_do_dia);
+  }
+}
