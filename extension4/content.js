@@ -69,7 +69,11 @@ if(typeof Horario === 'undefined'){//Evita que a classe seja redeclarada caso j√
       let divisoes = string.split(delimitador);
       this.horas = Number(divisoes[0])
       this.minutos = Number(divisoes[1])
-      this.segundos = Number(divisoes[2])
+      if(isNaN(Number(divisoes[2]))){
+        this.segundos = 0;
+      }else{
+        this.segundos = Number(divisoes[2])
+      }
     }
 
     ehMaior(obj){
@@ -116,7 +120,7 @@ if(typeof Intervalo === 'undefined'){
     }
 
     estaContidoEm(obj){
-      if(this.entrada.ehMaior(obj.entrada) && obj.fim.ehMaior(this.fim)){
+      if((this.inicio.ehMaior(obj.inicio) || this.inicio.ehIgual(obj.inicio)) && (obj.fim.ehMaior(this.fim) || obj.fim.ehIgual(this.fim))){
         return true;
       }else{
         return false;
@@ -134,29 +138,30 @@ if(typeof Intervalo === 'undefined'){
   window.Intervalo = Intervalo;//Permitir que a classe seja acessada globalmente
 }
 
-int = new Intervalo('12:30:00','13:30:00',':');
-int.printa();
+todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
 
-
-todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)");
-
-for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
+i = 0;
+for(; i < todos_horarios_entrada_saida_td.length; i++){
   entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
-  if(entrada_saida.length != 0){
-    horarios_entrada_saida = []
-    entrada_saida.forEach(e => {
-      aux = []
-      e.split(':').forEach(e2 => {
-        if(Number(e2)){
-          aux.push(Number(e2));
-        }
-      });
-      horarios_entrada_saida.push(aux);
-    }); 
-    // console.log(horarios_entrada_saida)
+  if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
     numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-    // let intervalos_do_dia;
+    intervalos_do_dia = [];
     intervalos_de_tempo_dias_semana.forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
-    // console.log(intervalos_do_dia);
+
+    intervalos_do_dia.forEach(hor_aula => {
+      aux_intervalo_aula_para_comparacao = new Intervalo(hor_aula[0], hor_aula[1], ':');
+      j = 0;
+      bool = false;
+      while(j < entrada_saida.length){
+        aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
+        if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
+          bool = true;
+        }
+        j = j+2;
+      }
+      if(!bool){
+        document.querySelectorAll('tr')[i+2].style.backgroundColor = "red";
+      }
+    });
   }
 }
