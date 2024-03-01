@@ -63,6 +63,81 @@ chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana});
 
 //Parte responsavel por extrair os horarios de e/s
 
+if(typeof Horario === 'undefined'){//Evita que a classe seja redeclarada caso já exista, sem essa condição um erro é emitido no console
+  class Horario {
+    constructor(string,delimitador){
+      let divisoes = string.split(delimitador);
+      this.horas = Number(divisoes[0])
+      this.minutos = Number(divisoes[1])
+      this.segundos = Number(divisoes[2])
+    }
+
+    ehMaior(obj){
+      if(this.horas > obj.horas){
+        return true;
+      }else{
+        if(this.horas == obj.horas){
+          if(this.minutos > obj.minutos){
+            return true;
+          }else{
+            if(this.minutos == obj.minutos){
+              if(this.segundos > obj.segundos){
+                return true;
+              }else{
+                return false;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    ehIgual(obj){
+      if(this.horas == obj.horas && this.minutos == obj.minutos && this.segundos == obj.segundos){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    printa(){
+      console.log(`Horas: ${this.horas} Minutos: ${this.minutos} Segundos: ${this.segundos}`)
+    }
+  }
+
+  window.Horario = Horario;//Permitir que a classe seja acessada globalmente
+}
+
+if(typeof Intervalo === 'undefined'){
+  class Intervalo {
+    constructor(horario_entrada,horario_saida,delimitador){
+      this.inicio = new Horario(horario_entrada,delimitador);
+      this.fim = new Horario(horario_saida,delimitador);
+    }
+
+    estaContidoEm(obj){
+      if(this.entrada.ehMaior(obj.entrada) && obj.fim.ehMaior(this.fim)){
+        return true;
+      }else{
+        return false;
+      }
+    }
+
+    printa(){
+      console.log('Inicio: ')
+      this.inicio.printa()
+      console.log('Fim: ')
+      this.fim.printa()
+    }
+  }
+
+  window.Intervalo = Intervalo;//Permitir que a classe seja acessada globalmente
+}
+
+int = new Intervalo('12:30:00','13:30:00',':');
+int.printa();
+
+
 todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)");
 
 for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
@@ -80,8 +155,8 @@ for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
     }); 
     // console.log(horarios_entrada_saida)
     numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-    let intervalos_do_dia;
+    // let intervalos_do_dia;
     intervalos_de_tempo_dias_semana.forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
-    console.log(intervalos_do_dia);
+    // console.log(intervalos_do_dia);
   }
 }
