@@ -44,13 +44,41 @@ document.getElementById("btnComeco").addEventListener("click", function () {
   this.remove();
 });
 
+function verificaHorarios(){
+  i = 0;
+  for(; i < todos_horarios_entrada_saida_td.length; i++){
+    entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+    if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
+      numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
+      intervalos_do_dia = [];
+      intervalos_de_tempo_dias_semana.forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
+
+      intervalos_do_dia.forEach(hor_aula => {
+        aux_intervalo_aula_para_comparacao = new Intervalo(hor_aula[0], hor_aula[1], ':');
+        j = 0;
+        bool = false;
+        while(j < entrada_saida.length){
+          aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
+          if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
+            bool = true;
+          }
+          j = j+2;
+        }
+        if(!bool){
+          document.querySelectorAll('tr')[i+2].style.backgroundColor = "red";
+        }
+      });
+    }
+  }
+}
+
 document.getElementById("btnModal").addEventListener("click", function () {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     const activeTab = tabs[0];
 
     await chrome.scripting.executeScript({
       target: { tabId: activeTab.id },
-      files: ["modal.js"],
+      func: verificaHorarios,
     });
   })
 });
