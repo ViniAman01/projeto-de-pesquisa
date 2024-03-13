@@ -1,6 +1,5 @@
 todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)");
 todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
-todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
 
 //Parte responsavel por extrair os horarios e relacionar com os dias da semana
 
