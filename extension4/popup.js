@@ -2,12 +2,10 @@ document.getElementById("btnComeco").addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       const activeTab = tabs[0];
 
-      // if(Object.values(await chrome.storage.sync.get(['intervalos'])).length == 0){
-        await chrome.scripting.executeScript({
-          target: { tabId: activeTab.id },
-          files: ["content.js"],
-        });
-      // }
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        files: ["content.js"],
+      });
       
       const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
       const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];
@@ -46,6 +44,7 @@ document.getElementById("btnComeco").addEventListener("click", function () {
 
 async function verificaHorarios(){
   todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
+  let linhas_tabela_texto = new Array(); 
 
   for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
     entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
@@ -58,21 +57,23 @@ async function verificaHorarios(){
       intervalos_do_dia.forEach(hor_aula => {
         aux_intervalo_aula_para_comparacao = new Intervalo(hor_aula[0], hor_aula[1], ':');
         j = 0;
-        bool = false;
+        bool = true;
         while(j < entrada_saida.length){
           aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
           if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
-            bool = true;
+            bool = false;
           }
           j = j+2;
         }
-        if(!bool){
-          const linha_tabela_texto = document.querySelectorAll('tr')[i+2].innerText;
-          chrome.storage.sync.set({'linha_tabela_texto': linha_tabela_texto});
+        if(bool){
+          const linha = document.querySelectorAll('tr')[i+2].innerText;
+          console.log(linha);
+          linhas_tabela_texto.push(linha);
         }
       });
     }
   }
+  chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
 }
 
 document.getElementById("btnHorarios").addEventListener("click", function () {
