@@ -2,64 +2,69 @@
 <html>
   <head>
     <title>SUAP</title>
+    <style>
+      body {
+        text-align: center;
+      }
+      table {
+        border-collapse: collapse;
+        border: 2px solid rgb(200,200,200);
+        letter-spacing: 1px;
+        font-size: 0.8rem;
+      }
+
+      td {
+        border: 1px solid rbg(190,190,190);
+        padding: 10px 20px;
+      }
+
+      td {
+        text-align: center;
+      }
+
+      tr:nth-child(odd) td {
+        background-color: rgb(204, 203, 203);
+      }
+
+      tr:nth-child(even) td {
+        background-color: rgb(247, 243, 243);
+      }
+
+      caption {
+        padding: 10px;
+      }
+
+      .btn{
+        padding: 6px 12px;
+
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 400;
+        
+        line-height: 1.42857143;
+        
+        border: 1px solid transparent;
+        border-color: #0c7014;
+        border-radius: 4px;      
+        
+        color: #ffffff;
+        background-color: #33b745;
+        transition: background-color 0.2s;
+      }
+      .btn-container {
+        margin-top: 20px;
+      }
+      .btn:active {
+        background-color: #0c7014; 
+      }
+
+      a {
+        padding: 10px;
+        margin-top: 10px;
+        font-size: 15px;
+      }
+    </style>
   </head>
-  <style>
-    body {
-      text-align: center;
-    }
-    table {
-      border-collapse: collapse;
-      border: 2px solid rgb(200,200,200);
-      letter-spacing: 1px;
-      font-size: 0.8rem;
-    }
-
-    td {
-      border: 1px solid rbg(190,190,190);
-      padding: 10px 20px;
-    }
-
-    td {
-      text-align: center;
-    }
-
-    tr:nth-child(odd) td {
-      background-color: rgb(204, 203, 203);
-    }
-
-    tr:nth-child(even) td {
-      background-color: rgb(247, 243, 243);
-    }
-
-    caption {
-      padding: 10px;
-    }
-
-    .btn{
-      padding: 6px 12px;
-
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 400;
-      
-      line-height: 1.42857143;
-      
-      border: 1px solid transparent;
-      border-color: #0c7014;
-      border-radius: 4px;      
-      
-      color: #ffffff;
-      background-color: #33b745;
-      transition: background-color 0.2s;
-    }
-    .btn-container {
-      margin-top: 20px;
-    }
-    .btn:active {
-      background-color: #0c7014; 
-    }
-    
-  </style>
   <body>
     <table id="tabelaIntervalos" contenteditable="true">
        <tr>
@@ -75,6 +80,6 @@
       <button id="btnHorarios"  class="btn">Verificar Hor&aacute;rios</button>
     </div>
     <script src="popup.js"></script>
-    <a href="tabela_horarios.html">Hor&aacute;rios Irregulares</a>
+    <a href="tabela_horarios_irregulares.html">Hor&aacute;rios Irregulares</a>
   </body>
 </html>

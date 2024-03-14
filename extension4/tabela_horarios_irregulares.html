@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body{
+        text-align: center;
+      }
+      .btn{
+        padding: 6px 12px;
+
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 400;
+        
+        line-height: 1.42857143;
+        
+        border: 1px solid transparent;
+        border-color: #0c7014;
+        border-radius: 4px;      
+        
+        color: #ffffff;
+        background-color: #33b745;
+        transition: background-color 0.2s;
+      }
+
+      table {
+        font-size: 15px;
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 20px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+    </style>
+  </head>
+    <body>
+
+      <h2 style="text-align: center;">Hor&aacute;rios Irregulares</h2>
+
+      <table>
+        <tr>
+          <th>Dia</th>
+          <th>Entrada e Sa&iacute;da</th>
+          <th>Hor&aacute;rios de Aula e PE</th>
+        </tr>
+      </table>
+      <button id="btnIrregulares" class="btn">Coletar Hor&aacute;rios Irregulares</button>
+      <script src="tabela_horarios_irregulares.js"></script>
+    </body>
+</html>

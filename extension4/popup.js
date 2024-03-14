@@ -67,14 +67,8 @@ async function verificaHorarios(){
           j = j+2;
         }
         if(!bool){
-          tabela_irregulares = {
-            'dia': null,
-            'es': null,
-            'aula_pe': null,
-          }
-          const elemento_tabela= document.querySelectorAll('tr')[i+2].style.backgroundColor;
-          console.log(elemento_tabela);
-          chrome.storage.sync.set({'tabela_irregulares': tabela_irregulares});
+          const linha_tabela_texto = document.querySelectorAll('tr')[i+2].innerText;
+          chrome.storage.sync.set({'linha_tabela_texto': linha_tabela_texto});
         }
       });
     }
