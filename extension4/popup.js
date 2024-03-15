@@ -54,23 +54,26 @@ async function verificaHorarios(){
       const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
       intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
 
-      intervalos_do_dia.forEach(hor_aula => {
-        aux_intervalo_aula_para_comparacao = new Intervalo(hor_aula[0], hor_aula[1], ':');
+      bool = true;
+      k = 0;
+      while(bool && k < intervalos_do_dia.length){
+        aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
         j = 0;
-        bool = true;
+        bool = false;
         while(j < entrada_saida.length){
           aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
           if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
-            bool = false;
+            bool = true;
           }
           j = j+2;
         }
-        if(bool){
+        if(!bool){
           const linha = document.querySelectorAll('tr')[i+2].innerText;
           console.log(linha);
           linhas_tabela_texto.push(linha);
         }
-      });
+        k++;
+      }
     }
   }
   chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
