@@ -22,18 +22,14 @@ document.getElementById("btnIrregulares").addEventListener("click", async functi
     dia = `${tokens[0]} ${tokens[1]}`;
 
     e_s = tokens.filter(i => /(E:|S:)/.test(i) && !/(PE:)/.test(i));
-    e_s_string = e_s[0] + '\n';
+    e_s_string = '';
     e_s.forEach(e => {
-      if(e != e_s[0]){
-        e_s_string = e_s_string + e + '\n';
-      }
+      e_s_string = e_s_string + e + '\n';
     });
 
-    aula_pe = horarios_dia[0][0] + ' - ' + horarios_dia[0][1] + '\n';
+    aula_pe = '';
     horarios_dia.forEach(e => {
-      if(e != e[0]){
-        aula_pe = aula_pe + e[0] + ' - ' + e[1] + '\n';
-      }
+      aula_pe = aula_pe + e[0] + ' - ' + e[1] + '\n';
     });
 
     linha = tabela.insertRow()
