@@ -3,6 +3,9 @@ todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
 
 //Parte responsavel por extrair os horarios e relacionar com os dias da semana
 
+title = document.getElementsByClassName("title-container");
+title[0].textContent = "oi";
+
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
 

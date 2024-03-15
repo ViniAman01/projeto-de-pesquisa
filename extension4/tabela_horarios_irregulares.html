@@ -4,6 +4,8 @@
     <style>
       html {
         scroll-behavior: smooth;
+        width: 1000px;
+        height: 750px;
       }
       body{
         text-align: center;
@@ -27,10 +29,10 @@
       }
 
       table {
+        width: 100%;
         font-size: 20px;
         font-family: arial, sans-serif;
         border-collapse: collapse;
-        width: 100%;
       }
 
       td, th {
@@ -39,7 +41,10 @@
         padding: 30px;
         line-height: -5px;
         /* word-spacing: 10px; */
-        white-space:pre-wrap;
+        /* overflow: hidden; */
+        /* text-overflow: ellipsis; */
+        /* word-wrap: break-word; */
+        white-space: nowrap;
 
       }
 
