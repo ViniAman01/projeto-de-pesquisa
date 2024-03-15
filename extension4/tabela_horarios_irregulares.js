@@ -18,18 +18,27 @@ document.getElementById("btnIrregulares").addEventListener("click", async functi
       }
     });
     tabela = document.getElementById("tabelaIrregulares");
+
     dia = `${tokens[0]} ${tokens[1]}`;
-    es = tokens[2];
+
+    e_s = tokens.filter(i => /(E:|S:)/.test(i) && !/(PE:)/.test(i));
+    e_s_string = e_s[0] + '\n';
+    e_s.forEach(e => {
+      if(e != e_s[0]){
+        e_s_string = e_s_string + e + '\n';
+      }
+    });
+
     aula_pe = horarios_dia[0][0] + ' - ' + horarios_dia[0][1] + '\n';
     horarios_dia.forEach(e => {
       if(e != e[0]){
         aula_pe = aula_pe + e[0] + ' - ' + e[1] + '\n';
       }
     });
-    console.log(aula_pe);
+
     linha = tabela.insertRow()
     linha.insertCell(0).textContent = dia;
-    linha.insertCell(1).textContent = es;
+    linha.insertCell(1).textContent = e_s_string;
     linha.insertCell(2).textContent = aula_pe;
   });
   this.remove();
