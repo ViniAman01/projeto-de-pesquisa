@@ -1,3 +1,50 @@
+async function verificaHorarios(){
+  todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
+  let linhas_tabela_texto = new Array(); 
+
+  for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
+    entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+    if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
+      numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
+      intervalos_do_dia = [];
+      const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
+      intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
+
+      bool = true;
+      k = 0;
+      while(bool && k < intervalos_do_dia.length){
+        aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
+        j = 0;
+        bool = false;
+        while(j < entrada_saida.length){
+          aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
+          if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
+            bool = true;
+          }
+          j = j+2;
+        }
+        if(!bool){
+          const linha = document.querySelectorAll('tr')[i+2].innerText;
+          linhas_tabela_texto.push(linha);
+        }
+        k++;
+      }
+    }
+  }
+  chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
+}
+
+async function fetchHTML(html) {
+  html = await fetch(chrome.runtime.getURL("modal.html"));
+  html = await html.text();
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+function scriptModal(){
+  const script_modal = document.getElementById("script-modal");
+  eval(script_modal.innerHTML);
+}
+
 document.getElementById("btnComeco").addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       const activeTab = tabs[0];
@@ -6,7 +53,22 @@ document.getElementById("btnComeco").addEventListener("click", function () {
         target: { tabId: activeTab.id },
         files: ["content.js"],
       });
-      
+
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        func: verificaHorarios,
+      });
+
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        func: fetchHTML,
+      });
+
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        files: ["modal.js"],
+      });
+
       const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
       const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];
       const tabela = document.getElementById("tabelaIntervalos");
@@ -40,52 +102,4 @@ document.getElementById("btnComeco").addEventListener("click", function () {
     }
   })
   this.remove();
-});
-
-async function verificaHorarios(){
-  todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
-  let linhas_tabela_texto = new Array(); 
-
-  for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
-    entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
-    if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-      numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-      intervalos_do_dia = [];
-      const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
-      intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
-
-      bool = true;
-      k = 0;
-      while(bool && k < intervalos_do_dia.length){
-        aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
-        j = 0;
-        bool = false;
-        while(j < entrada_saida.length){
-          aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
-          if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
-            bool = true;
-          }
-          j = j+2;
-        }
-        if(!bool){
-          const linha = document.querySelectorAll('tr')[i+2].innerText;
-          console.log(linha);
-          linhas_tabela_texto.push(linha);
-        }
-        k++;
-      }
-    }
-  }
-  chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
-}
-
-document.getElementById("btnHorarios").addEventListener("click", function () {
-  chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
-    const activeTab = tabs[0];
-
-    await chrome.scripting.executeScript({
-      target: { tabId: activeTab.id },
-      func: verificaHorarios,
-    });
-  })
 });

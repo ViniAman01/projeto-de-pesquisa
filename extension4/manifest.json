@@ -8,5 +8,11 @@
   "action": {
     "default_title": "SUAP",
     "default_popup": "popup.html"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "modal.html" ],
+      "matches": [ "file:///*" ]
+    }
+  ]
 }
