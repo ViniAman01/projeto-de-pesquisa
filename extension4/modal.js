@@ -25,23 +25,23 @@
     });
     tabela = document.getElementById("tabela-irregulares");
 
-    dia = `${tokens[0]} ${tokens[1]}`;
+    dia = `${tokens[0]}<br>${tokens[1]}`;
 
     e_s = tokens.filter(i => /(E:|S:)/.test(i) && !/(PE:)/.test(i));
     e_s_string = '';
     e_s.forEach(e => {
-      e_s_string = e_s_string + e + '\n';
+      e_s_string = e_s_string + e + '<br>';
     });
 
     aula_pe = '';
     horarios_dia.forEach(e => {
-      aula_pe = aula_pe + e[0] + ' - ' + e[1] + '\n';
+      aula_pe = aula_pe + e[0] + ' - ' + e[1] + '<br>';
     });
 
     linha = tabela.insertRow()
-    linha.insertCell(0).textContent = dia;
-    linha.insertCell(1).textContent = e_s_string;
-    linha.insertCell(2).textContent = aula_pe;
+    linha.insertCell(0).innerHTML = dia;
+    linha.insertCell(1).innerHTML = e_s_string;
+    linha.insertCell(2).innerHTML = aula_pe;
   });
   
   console.log("Finalizou foreach")

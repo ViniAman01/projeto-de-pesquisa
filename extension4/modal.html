@@ -1,5 +1,18 @@
 <style>
-  .btn {
+  dialog {
+    padding: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    border: none;
+    border-radius: .5rem;
+    box-shadow: 0 0 1em rgb( 0 0 0 / .3);
+    width: 100%;
+  }
+
+  dialog button {
     padding: 6px 12px;
 
     font-family: arial;
@@ -21,7 +34,7 @@
   }
 
   #btn-close{
-    border-color: #8f0000;
+    border-color: #4b0000;
     background-color: #fb0000;
   }
 
@@ -29,17 +42,6 @@
     background-color: rgb(0 0 0 / .3);
   }
     
-  dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    border: none;
-    border-radius: .5rem;
-    box-shadow: 0 0 1em rgb( 0 0 0 / .3);
-    width: 100%;
-  }
 
   #tabela-irregulares {
     border-collapse: collapse;
@@ -48,9 +50,14 @@
     font-family: arial, sans-serif;
     margin: 0 auto;
   }
+  
+  #breakline {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+  }
 
-  #tabela-irregulares td, th {
-    text-align: center;
+  #tabela-irregulares td{
     border: 1px solid #dddddd;
     padding: 10px;
   }
@@ -58,22 +65,22 @@
   #tabela-irregulares tr:nth-child(odd) td {
     background-color: rgb(204, 203, 203);
   }
-
   #tabela-irregulares tr:nth-child(even) td {
     background-color: rgb(247, 243, 243);
   }
 </style>
 
-<button id="btn-open" class="btn">Abrir Modal</button>
-
+<!-- <button id="btn-open">Abrir Modal</button> -->
 <dialog id="modal">
   <h2>Hor&aacute;rios Irregulares</h2>
-  <table id="tabela-irregulares">
-    <th>Dia</th>
-    <th>Entrada e Sa&iacute;da</th>
-    <th>Hor&aacute;rios de Aula e PE</th>
-  </table>
-  <button id="btn-close" class="btn">Fechar</button>
+    <div id="breakline">
+      <table id="tabela-irregulares">
+        <th style="text-align: center;">Dia</th>
+        <th style="text-align: center;">Entrada e Sa&iacute;da</th>
+        <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
+      </table>
+    </div> 
+  <button id="btn-close">Fechar</button>
 </dialog>
 
 <script src="modal.js"></script>
