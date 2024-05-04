@@ -30,6 +30,12 @@ async function verificaHorarios(){
         k++;
       }
     }
+    else{
+      if(entrada_saida.length != 0){
+        const linha = document.querySelectorAll('tr')[i+2].innerText;
+        linhas_tabela_texto.push(linha);
+      }
+    }
   }
   chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
 }
@@ -45,7 +51,7 @@ function scriptModal(){
   eval(script_modal.innerHTML);
 }
 
-document.getElementById("btnComeco").addEventListener("click", function () {
+document.getElementById("btn-comeco").addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       const activeTab = tabs[0];
 
@@ -71,7 +77,7 @@ document.getElementById("btnComeco").addEventListener("click", function () {
 
       const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
       const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];
-      const tabela = document.getElementById("tabelaIntervalos");
+      const tabela = document.getElementById("tabela-intervalos");
       
       numero_de_linhas = 0;
       for(indice_vdi in valores_dias_intervalos){
