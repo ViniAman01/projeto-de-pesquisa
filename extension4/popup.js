@@ -46,12 +46,7 @@ async function fetchHTML(html) {
   document.body.insertAdjacentHTML('beforeend', html);
 }
 
-function scriptModal(){
-  const script_modal = document.getElementById("script-modal");
-  eval(script_modal.innerHTML);
-}
-
-document.getElementById("btn-comeco").addEventListener("click", function () {
+document.getElementById("btn-coletar").addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       const activeTab = tabs[0];
 
