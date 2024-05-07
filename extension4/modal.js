@@ -1,10 +1,6 @@
 (async function(){
-  console.log("executou script");
   const linha_tabela_texto = await chrome.storage.local.get(['linhas_tabela_texto']);
   const intervalos = (await chrome.storage.sync.get(['intervalos']))['intervalos'];
-
-  console.log(linha_tabela_texto);
-  console.log(intervalos);
 
   dia_semana = {
     'Segunda-feira': 0,
@@ -15,7 +11,6 @@
   };
 
   linha_tabela_texto['linhas_tabela_texto'].forEach(linha => {
-    console.log(linha);
     tokens = linha.split('\n').filter(e => e != '' && e != '\t');
     let horarios_dia = new Array();
     intervalos.forEach(e => {
@@ -44,15 +39,11 @@
     linha.insertCell(2).innerHTML = aula_pe;
   });
   
-  console.log("Finalizou foreach")
-
   const modal = document.getElementById("modal");
   modal.showModal();
-  console.log("abriu modal");
 
   document.getElementById("btn-close").addEventListener("click", function() {
     modal.close();
   });
 
-  console.log("adicionou evento de fechar botão");
 })()

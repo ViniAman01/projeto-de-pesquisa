@@ -1,83 +1,85 @@
-<style>
-  dialog {
-    padding: 10px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    border: none;
-    border-radius: .5rem;
-    box-shadow: 0 0 1em rgb( 0 0 0 / .3);
-    width: 100%;
-  }
-  
-  dialog::backdrop {
-    background-color: rgb(0 0 0 / .3);
-  }
-
-  dialog h2 {
-    margin-bottom: 10px;
-  }
-
-  #tabela-irregulares {
-    border-collapse: collapse;
-    border: 2px solid rgb(200,200,200);
-    font-size: 20px;
-    font-family: arial, sans-serif;
-    margin: 0 auto;
-  }
-  
-  #tabela-irregulares td,th{
-    border: 1px solid #dddddd;
-    padding: 10px;
-  }
-  
-  #tabela-irregulares tr:nth-child(odd) td {
-    background-color: rgb(204, 203, 203);
-  }
-  
-  #tabela-irregulares tr:nth-child(even) td {
-    background-color: rgb(247, 243, 243);
-  }
-
-  dialog button {
-    padding: 6px 12px;
-
-    font-family: arial;
-    font-size: 13px;
-    font-weight: 400;
+<div id="modal-html">
+  <style>
+    dialog {
+      padding: 10px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      border: none;
+      border-radius: .5rem;
+      box-shadow: 0 0 1em rgb( 0 0 0 / .3);
+      width: 100%;
+    }
     
-    line-height: 1.42857143;
+    dialog::backdrop {
+      background-color: rgb(0 0 0 / .3);
+    }
+
+    dialog h2 {
+      margin-bottom: 10px;
+    }
+
+    #tabela-irregulares {
+      border-collapse: collapse;
+      border: 2px solid rgb(200,200,200);
+      font-size: 20px;
+      font-family: arial, sans-serif;
+      margin: 0 auto;
+    }
     
-    border: 1px solid transparent;
-    border-radius: 4px;      
+    #tabela-irregulares td,th{
+      border: 1px solid #dddddd;
+      padding: 10px;
+    }
     
-    color: #ffffff;
-    transition: background-color 0.2s;
-  }
+    #tabela-irregulares tr:nth-child(odd) td {
+      background-color: rgb(204, 203, 203);
+    }
+    
+    #tabela-irregulares tr:nth-child(even) td {
+      background-color: rgb(247, 243, 243);
+    }
 
-  /* #btn-open{
-    border-color: #0c7014;
-    background-color: #33b745;
-  } */
+    dialog button {
+      padding: 6px 12px;
 
-  #btn-close{
-    margin-top: 10px;
-    border-color: #4b0000;
-    background-color: #fb0000;
-  }
-</style>
+      font-family: arial;
+      font-size: 13px;
+      font-weight: 400;
+      
+      line-height: 1.42857143;
+      
+      border: 1px solid transparent;
+      border-radius: 4px;      
+      
+      color: #ffffff;
+      transition: background-color 0.2s;
+    }
 
-<!-- <button id="btn-open">Abrir Modal</button> -->
-<dialog id="modal">
-    <h2>Hor&aacute;rios Irregulares</h2>
-    <table id="tabela-irregulares">
-      <th style="text-align: center;">Dia</th>
-      <th style="text-align: center;">Entrada e Sa&iacute;da</th>
-      <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
-    </table>
-    <button id="btn-close">Fechar</button>
-</dialog>
+    /* #btn-open{
+      border-color: #0c7014;
+      background-color: #33b745;
+    } */
 
-<script src="modal.js"></script>
+    #btn-close{
+      margin-top: 10px;
+      border-color: #4b0000;
+      background-color: #fb0000;
+    }
+  </style>
+
+  <!-- <button id="btn-open">Abrir Modal</button> -->
+  <dialog id="modal">
+      <h2>Hor&aacute;rios Irregulares</h2>
+      <table id="tabela-irregulares">
+        <th style="text-align: center;">Dia</th>
+        <th style="text-align: center;">Entrada e Sa&iacute;da</th>
+        <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
+      </table>
+      <button id="btn-close">Fechar</button>
+  </dialog>
+
+  <script src="modal.js"></script>
+</div>

@@ -1,49 +1,57 @@
 async function verificaHorarios(){
-  todos_horarios_entrada_saida_td = document.querySelectorAll("td:nth-child(2)")
-  let linhas_tabela_texto = new Array(); 
+    const tabela_frequencias = document.querySelector("#tabela-frequencias");
+    console.log("executou");
+    todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
+    let linhas_tabela_texto = new Array(); 
 
-  for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
-    entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
-    if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-      numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-      intervalos_do_dia = [];
-      const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
-      intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
+    for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
+      entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+      if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
+        numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
+        intervalos_do_dia = [];
+        const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
+        intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
 
-      bool = true;
-      k = 0;
-      while(bool && k < intervalos_do_dia.length){
-        aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
-        j = 0;
-        bool = false;
-        while(j < entrada_saida.length){
-          aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
-          if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
-            bool = true;
+        bool = true;
+        k = 0;
+        while(bool && k < intervalos_do_dia.length){
+          aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
+          j = 0;
+          bool = false;
+          while(j < entrada_saida.length){
+            aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
+            if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
+              bool = true;
+            }
+            j = j+2;
           }
-          j = j+2;
+          if(!bool){
+            const linha = tabela_frequencias.querySelectorAll('tr')[i+2].innerText;
+            linhas_tabela_texto.push(linha);
+          }
+          k++;
         }
-        if(!bool){
-          const linha = document.querySelectorAll('tr')[i+2].innerText;
+      }
+      else{
+        if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
+          const linha = tabela_frequencias.querySelectorAll('tr')[i+2].innerText;
+          console.log(linha)
           linhas_tabela_texto.push(linha);
         }
-        k++;
       }
     }
-    else{
-      if(entrada_saida.length != 0){
-        const linha = document.querySelectorAll('tr')[i+2].innerText;
-        linhas_tabela_texto.push(linha);
-      }
-    }
-  }
-  chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
+    chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
+  // }
 }
 
-async function fetchHTML(html) {
-  html = await fetch(chrome.runtime.getURL("modal.html"));
-  html = await html.text();
-  document.body.insertAdjacentHTML('beforeend', html);
+async function fetchHTML() {
+  const modal_existente_html = document.getElementById("modal-html");
+  if(modal_existente_html){
+    modal_existente_html.remove();
+  }
+  modal_nova_html = await fetch(chrome.runtime.getURL("modal.html"));
+  modal_nova_html = await modal_nova_html.text();
+  document.body.insertAdjacentHTML('beforeend', modal_nova_html);
 }
 
 document.getElementById("btn-coletar").addEventListener("click", function () {
@@ -90,17 +98,17 @@ document.getElementById("btn-coletar").addEventListener("click", function () {
         }
       }
 
-    for(indice_vdi in valores_dias_intervalos){
-      dia_semana = valores_dias_intervalos[indice_vdi][0];
-      intervalos_do_dia = valores_dias_intervalos[indice_vdi][1];
+      for(indice_vdi in valores_dias_intervalos){
+        dia_semana = valores_dias_intervalos[indice_vdi][0];
+        intervalos_do_dia = valores_dias_intervalos[indice_vdi][1];
 
-      for(indice_intervalo in intervalos_do_dia){
-        inicio_horario = intervalos_do_dia[indice_intervalo][0];
-        fim_horario = intervalos_do_dia[indice_intervalo][1];
+        for(indice_intervalo in intervalos_do_dia){
+          inicio_horario = intervalos_do_dia[indice_intervalo][0];
+          fim_horario = intervalos_do_dia[indice_intervalo][1];
 
-        celulas[indice_intervalo][dia_semana].textContent = inicio_horario + ' - ' + fim_horario;
+          celulas[indice_intervalo][dia_semana].textContent = inicio_horario + ' - ' + fim_horario;
+        }
       }
-    }
   })
   this.remove();
 });
