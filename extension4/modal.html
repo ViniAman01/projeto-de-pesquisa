@@ -17,8 +17,32 @@
       background-color: rgb(0 0 0 / .3);
     }
 
+    dialog #cabecalho {
+      display: block;
+      justify-content: center;
+    }
+
     dialog h2 {
       margin-bottom: 10px;
+    }
+
+    #bt-fechar{
+      margin-bottom: 10px;
+      border-color: #4b0000;
+      background-color: #fb0000;
+    }
+
+    #bt-editar{
+      margin-bottom: 10px;
+      border-color: #0026ff;
+      background-color: #009ffb;
+    }
+
+    #bt-salvar{
+      display: none;
+      margin-bottom: 10px;
+      border-color: #035c00;
+      background-color: #018d2b;
     }
 
     #tabela-irregulares {
@@ -42,58 +66,51 @@
       background-color: rgb(247, 243, 243);
     }
 
-    dialog button {
-      padding: 6px 12px;
-
-      font-family: arial;
-      font-size: 13px;
-      font-weight: 400;
-      
-      line-height: 1.42857143;
-      
-      border: 1px solid transparent;
-      border-radius: 4px;      
-      
-      color: #ffffff;
-      transition: background-color 0.2s;
-    }
-
-    #btn-close{
-      margin-top: 10px;
-      border-color: #4b0000;
-      background-color: #fb0000;
-    }
-
-    #btn-back-to-top {
+    #bt-voltar-para-topo {
       display: block; 
       position: sticky; 
       bottom: 0%; 
       left: 100%;
       background-color: #414040; 
-      color: white; 
-      cursor: pointer;
       padding: 10px; 
       padding-top: 2px;
       padding-bottom: 3px;
       border-radius: 10px; 
       font-size: 18px; 
     }
-
-    #btn-back-to-top:hover {
+    
+    #bt-voltar-para-topo:hover {
       background-color: #8b8b8b;
       color: rgb(0, 0, 0);
     }
-  </style>
+
+    dialog button {
+      padding: 6px 12px;
+      font-family: arial;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.42857143;
+      border: 1px solid transparent;
+      border-radius: 4px;      
+      color: #ffffff;
+      transition: background-color 0.2s;
+      cursor: pointer;
+    }
+    </style>
 
   <dialog id="modal">
-      <h2>Hor&aacute;rios Irregulares</h2>
-      <table id="tabela-irregulares">
+      <div id="cabecalho">
+        <h2>Hor&aacute;rios Irregulares</h2>
+        <button id="bt-fechar">Fechar</button>
+        <button id="bt-editar">Editar</button>
+        <button id="bt-salvar">Salvar Edicao</button>
+      </div>
+        <table id="tabela-irregulares">
         <th style="text-align: center;">Dia</th>
         <th style="text-align: center;">Entrada e Sa&iacute;da</th>
         <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
       </table>
-      <button id="btn-close">Fechar</button>
-      <button id="btn-back-to-top">&#8593;</button>
+      <button id="bt-voltar-para-topo">&#8593;</button>
   </dialog>
 
   <script src="modal.js"></script>

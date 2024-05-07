@@ -1,6 +1,5 @@
 async function verificaHorarios(){
     const tabela_frequencias = document.querySelector("#tabela-frequencias");
-    console.log("executou");
     todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
     let linhas_tabela_texto = new Array(); 
 
@@ -35,7 +34,6 @@ async function verificaHorarios(){
       else{
         if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
           const linha = tabela_frequencias.querySelectorAll('tr')[i+2].innerText;
-          console.log(linha)
           linhas_tabela_texto.push(linha);
         }
       }
@@ -54,7 +52,7 @@ async function fetchHTML() {
   document.body.insertAdjacentHTML('beforeend', modal_nova_html);
 }
 
-document.getElementById("btn-coletar").addEventListener("click", function () {
+document.getElementById("bt-coletar").addEventListener("click", function () {
     chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
       const activeTab = tabs[0];
 
@@ -119,7 +117,7 @@ function abrirModal(){
   }
 }
 
-document.getElementById("btn-abrir-modal").addEventListener("click", function() {
+document.getElementById("bt-abrir-modal").addEventListener("click", function() {
   chrome.tabs.query({ active: true, currentWindow: true }, async function (tabs) {
     const activeTab = tabs[0];
 

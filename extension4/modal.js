@@ -43,12 +43,41 @@
   modal.showModal();  
 })()
 
-document.getElementById("btn-close").addEventListener("click", function() {
+document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
 
 
-document.getElementById("btn-back-to-top").addEventListener("click", function(){
+document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
   modal.scroll({top: 0, left: 0, behavior: 'smooth'});
+});
+
+document.getElementById("bt-editar").addEventListener("click", function () {
+  const modal = document.getElementById("modal");
+  const coluna_central = modal.querySelectorAll("td:nth-child(2)");
+  coluna_central.forEach(e => {
+    e.setAttribute("contenteditable","true");
+    e.style.backgroundColor = '#ffffff';
+  });
+  this.style.display = 'none';
+  document.getElementById("bt-salvar").style.display = 'initial';
+});
+
+document.getElementById("bt-salvar").addEventListener("click", function() {
+  const modal = document.getElementById("modal");
+  const coluna_central = modal.querySelectorAll("td:nth-child(2)");
+  var i = 0;
+  coluna_central.forEach(e => {
+    e.setAttribute("contenteditable","false");
+    if(i % 2 == 0){
+      e.style.backgroundColor = 'rgb(247, 243, 243)';
+    }else{
+      e.style.backgroundColor = 'rgb(204, 203, 203)';
+    } 
+    i = i+1;
+  });
+  this.style.display = 'none';
+  document.getElementById("bt-editar").style.display = 'initial';
+  const tabela = document.getElementById("tabela-irregulares");
 });
