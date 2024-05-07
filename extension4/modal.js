@@ -40,10 +40,15 @@
   });
   
   const modal = document.getElementById("modal");
-  modal.showModal();
-
-  document.getElementById("btn-close").addEventListener("click", function() {
-    modal.close();
-  });
-
+  modal.showModal();  
 })()
+
+document.getElementById("btn-close").addEventListener("click", function() {
+  modal.close();
+});
+
+
+document.getElementById("btn-back-to-top").addEventListener("click", function(){
+  const modal = document.getElementById("modal");
+  modal.scroll({top: 0, left: 0, behavior: 'smooth'});
+});

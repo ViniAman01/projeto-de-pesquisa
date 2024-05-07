@@ -58,19 +58,33 @@
       transition: background-color 0.2s;
     }
 
-    /* #btn-open{
-      border-color: #0c7014;
-      background-color: #33b745;
-    } */
-
     #btn-close{
       margin-top: 10px;
       border-color: #4b0000;
       background-color: #fb0000;
     }
+
+    #btn-back-to-top {
+      display: block; 
+      position: sticky; 
+      bottom: 0%; 
+      left: 100%;
+      background-color: #414040; 
+      color: white; 
+      cursor: pointer;
+      padding: 10px; 
+      padding-top: 2px;
+      padding-bottom: 3px;
+      border-radius: 10px; 
+      font-size: 18px; 
+    }
+
+    #btn-back-to-top:hover {
+      background-color: #8b8b8b;
+      color: rgb(0, 0, 0);
+    }
   </style>
 
-  <!-- <button id="btn-open">Abrir Modal</button> -->
   <dialog id="modal">
       <h2>Hor&aacute;rios Irregulares</h2>
       <table id="tabela-irregulares">
@@ -79,6 +93,7 @@
         <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
       </table>
       <button id="btn-close">Fechar</button>
+      <button id="btn-back-to-top">&#8593;</button>
   </dialog>
 
   <script src="modal.js"></script>
