@@ -39,7 +39,6 @@ async function verificaHorarios(){
       }
     }
     chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
-  // }
 }
 
 async function fetchHTML() {
@@ -61,20 +60,20 @@ document.getElementById("bt-coletar").addEventListener("click", function () {
         files: ["content.js"],
       });
 
-      await chrome.scripting.executeScript({
-        target: { tabId: activeTab.id },
-        func: verificaHorarios,
-      });
-
-      await chrome.scripting.executeScript({
-        target: { tabId: activeTab.id },
-        func: fetchHTML,
-      });
-
-      await chrome.scripting.executeScript({
-        target: { tabId: activeTab.id },
-        files: ["modal.js"],
-      });
+      // await chrome.scripting.executeScript({
+      //   target: { tabId: activeTab.id },
+      //   func: verificaHorarios,
+      // });
+      //
+      // await chrome.scripting.executeScript({
+      //   target: { tabId: activeTab.id },
+      //   func: fetchHTML,
+      // });
+      //
+      // await chrome.scripting.executeScript({
+      //   target: { tabId: activeTab.id },
+      //   files: ["modal.js"],
+      // });
 
       // const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
       // const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];

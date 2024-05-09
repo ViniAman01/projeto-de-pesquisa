@@ -12,6 +12,7 @@
 
   linha_tabela_texto['linhas_tabela_texto'].forEach(linha => {
     tokens = linha.split('\n').filter(e => e != '' && e != '\t');
+    console.log(tokens);
     let horarios_dia = new Array();
     intervalos.forEach(e => {
       if(e[0] == dia_semana[tokens[1]]){

@@ -4,14 +4,6 @@ todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
 
-dia = {
-  'Segunda-feira': 0,
-  'Terça-feira': 1,
-  'Quarta-feira': 2,
-  'Quinta-feira': 3,
-  'Sexta-feira': 4
-}
-
 dia_semana_aula_strings = [];
 indices_dia_semana = [];
 
@@ -25,7 +17,7 @@ for(i = 0; i < todas_datas_aulas_td.length; i++){
   }
 }
 
-intervalos_de_tempo_dias_semana = [];
+intervalos_de_tempo_dias_semana = new Object();
 
 for(j in indices_dia_semana){
   i = indices_dia_semana[j];
@@ -39,7 +31,7 @@ for(j in indices_dia_semana){
 
   barra_split_horarios_strings = horarios_aulas_strings.split('/');
 
-  intervalos_de_tempo_dia = [];
+  intervalos_de_tempo_dia = new Array();
 
   indice_intervalos_de_tempo_dia = 0;
   index = 0;
@@ -54,7 +46,7 @@ for(j in indices_dia_semana){
       index++;
     }
   }
-  intervalos_de_tempo_dias_semana.push([dia[dia_semana_aula_strings[j]],intervalos_de_tempo_dia]);
+  intervalos_de_tempo_dias_semana[dia_semana_aula_strings[j]] = intervalos_de_tempo_dia;
 }
 
 chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana});
