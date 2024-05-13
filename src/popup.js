@@ -1,19 +1,20 @@
 async function verificaHorarios(){
     const tabela_frequencias = document.querySelector("#tabela-frequencias");
     todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
-    intervalos = (await chrome.storage.local.get(['intervalos']))['intervalos'];
-    let linhas_tabela_texto = new Array(); 
+    horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
+    let dias_irregulares = new Array(); 
 
     for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
       entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
       if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-        console.log(todas_datas_aulas_td[i].innerText.split('\n')[2]);
-        intervalos_do_dia = intervalos[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-        console.log(intervalos_do_dia);
+        dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e != '');
+        console.log(dia_data_string);
+        dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
+        console.log(dia_horarios_regulares);
         bool = true;
         k = 0;
-        while(bool && k < intervalos_do_dia.length){
-          aux_intervalo_aula_para_comparacao = new Intervalo(intervalos_do_dia[k][0], intervalos_do_dia[k][1], ':');
+        while(bool && dia_horarios_regulares && k < dia_horarios_regulares.length){
+          aux_intervalo_aula_para_comparacao = new Intervalo(dia_horarios_regulares[k][0], dia_horarios_regulares[k][1], ':');
           j = 0;
           bool = false;
           while(j < entrada_saida.length){
@@ -24,20 +25,18 @@ async function verificaHorarios(){
             j = j+2;
           }
           if(!bool){
-            const linha = tabela_frequencias.querySelectorAll('tr')[i+2].innerText;
-            linhas_tabela_texto.push(linha);
+            dias_irregulares.push([dia_data_string,entrada_saida]);
           }
           k++;
         }
       }
       else{
         if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
-          const linha = tabela_frequencias.querySelectorAll('tr')[i+2].innerText;
-          linhas_tabela_texto.push(linha);
+          dias_irregulares.push([dia_data_string,entrada_saida]);
         }
       }
     }
-    chrome.storage.local.set({'linhas_tabela_texto': linhas_tabela_texto});
+    chrome.storage.local.set({'dias_irregulares': dias_irregulares});
 }
 
 async function fetchHTML() {
@@ -64,15 +63,15 @@ document.getElementById("bt-coletar").addEventListener("click", function () {
         func: verificaHorarios,
       });
 
-      // await chrome.scripting.executeScript({
-      //   target: { tabId: activeTab.id },
-      //   func: fetchHTML,
-      // });
-      //
-      // await chrome.scripting.executeScript({
-      //   target: { tabId: activeTab.id },
-      //   files: ["modal.js"],
-      // });
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        func: fetchHTML,
+      });
+
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        files: ["modal.js"],
+      });
 
       // const objeto_dias_intervalos = await chrome.storage.sync.get(['intervalos']);
       // const valores_dias_intervalos = objeto_dias_intervalos['intervalos'];

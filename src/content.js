@@ -1,5 +1,6 @@
-todas_datas_aulas_td = document.querySelectorAll("td:nth-child(1)");
-todos_horarios_aulas_td = document.querySelectorAll("td.ifms-code");
+const tabela_frequencias = document.querySelector("#tabela-frequencias");
+const todas_datas_aulas_td = tabela_frequencias.querySelectorAll("td:nth-child(1)");
+const todos_horarios_aulas_td = tabela_frequencias.querySelectorAll("td.ifms-code");
 
 char_eh_aula = [];
 todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
@@ -49,7 +50,7 @@ for(j in indices_dia_semana){
   intervalos_de_tempo_dias_semana[dia_semana_aula_strings[j]] = intervalos_de_tempo_dia;
 }
 
-chrome.storage.local.set({'intervalos': intervalos_de_tempo_dias_semana});
+chrome.storage.local.set({'horarios_regulares': intervalos_de_tempo_dias_semana});
 
 if(typeof Horario === 'undefined'){//Evita que a classe seja redeclarada caso já exista, sem essa condição um erro é emitido no console
   class Horario {
