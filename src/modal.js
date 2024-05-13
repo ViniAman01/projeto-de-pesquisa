@@ -6,8 +6,8 @@
     dia_data = dia_irregular[0];
     e_s = dia_irregular[1];
     dia_horarios_regulares = horarios_regulares[dia_data[1]];
-
     if(dia_horarios_regulares){
+      i++;
       dia_data_string = dia_data[0] + '<br>' + dia_data[1];
 
       e_s_string = '';
@@ -37,7 +37,6 @@
   
   const modal = document.getElementById("modal");
   modal.showModal();  
-  console.log("modal abriu");
 })()
 
 document.getElementById("bt-fechar").addEventListener("click", function() {

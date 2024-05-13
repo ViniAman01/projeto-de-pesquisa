@@ -1,16 +1,15 @@
 async function verificaHorarios(){
     const tabela_frequencias = document.querySelector("#tabela-frequencias");
-    todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
-    horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
+    const todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
+    const todas_datas_aulas_td = tabela_frequencias.querySelectorAll("td:nth-child(1)")
+    const horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
     let dias_irregulares = new Array(); 
 
     for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
       entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
       if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-        dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e != '');
-        console.log(dia_data_string);
+        dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
         dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
-        console.log(dia_horarios_regulares);
         bool = true;
         k = 0;
         while(bool && dia_horarios_regulares && k < dia_horarios_regulares.length){
@@ -26,6 +25,11 @@ async function verificaHorarios(){
           }
           if(!bool){
             dias_irregulares.push([dia_data_string,entrada_saida]);
+            // console.log(dia_data_string);
+            // console.log(entrada_saida);
+            // console.log(todas_datas_aulas_td[i].innerText.split('\n')[0]);
+            // console.log(todas_datas_aulas_td[i].innerText.split('\n')[2]);
+            // console.log(tabela_frequencias.querySelectorAll('tr')[i+2].innerText);
           }
           k++;
         }
@@ -33,6 +37,11 @@ async function verificaHorarios(){
       else{
         if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
           dias_irregulares.push([dia_data_string,entrada_saida]);
+          // console.log(dia_data_string);
+          // console.log(entrada_saida);
+          // console.log(todas_datas_aulas_td[i].innerText.split('\n')[0]);
+          // console.log(todas_datas_aulas_td[i].innerText.split('\n')[2]);
+          // console.log(tabela_frequencias.querySelectorAll('tr')[i+2].innerText);
         }
       }
     }
