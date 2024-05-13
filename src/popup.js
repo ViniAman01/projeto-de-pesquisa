@@ -1,16 +1,15 @@
 async function verificaHorarios(){
     const tabela_frequencias = document.querySelector("#tabela-frequencias");
     todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
+    intervalos = (await chrome.storage.local.get(['intervalos']))['intervalos'];
     let linhas_tabela_texto = new Array(); 
 
     for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
       entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
       if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-        numero_do_dia = dia[todas_datas_aulas_td[i].innerText.split('\n')[2]];
-        intervalos_do_dia = [];
-        const intervalos_de_tempo_dias_semana = await chrome.storage.sync.get(['intervalos']);
-        intervalos_de_tempo_dias_semana['intervalos'].forEach(e => {if(e[0] == numero_do_dia){intervalos_do_dia = e[1]}});
-
+        console.log(todas_datas_aulas_td[i].innerText.split('\n')[2]);
+        intervalos_do_dia = intervalos[todas_datas_aulas_td[i].innerText.split('\n')[2]];
+        console.log(intervalos_do_dia);
         bool = true;
         k = 0;
         while(bool && k < intervalos_do_dia.length){
@@ -60,11 +59,11 @@ document.getElementById("bt-coletar").addEventListener("click", function () {
         files: ["content.js"],
       });
 
-      // await chrome.scripting.executeScript({
-      //   target: { tabId: activeTab.id },
-      //   func: verificaHorarios,
-      // });
-      //
+      await chrome.scripting.executeScript({
+        target: { tabId: activeTab.id },
+        func: verificaHorarios,
+      });
+
       // await chrome.scripting.executeScript({
       //   target: { tabId: activeTab.id },
       //   func: fetchHTML,

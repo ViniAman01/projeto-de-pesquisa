@@ -49,9 +49,7 @@ for(j in indices_dia_semana){
   intervalos_de_tempo_dias_semana[dia_semana_aula_strings[j]] = intervalos_de_tempo_dia;
 }
 
-chrome.storage.sync.set({'intervalos': intervalos_de_tempo_dias_semana});
-
-//Parte responsavel por extrair os horarios de e/s
+chrome.storage.local.set({'intervalos': intervalos_de_tempo_dias_semana});
 
 if(typeof Horario === 'undefined'){//Evita que a classe seja redeclarada caso já exista, sem essa condição um erro é emitido no console
   class Horario {
