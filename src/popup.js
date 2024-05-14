@@ -1,5 +1,5 @@
 async function verificaHorarios(){
-    const tabela_frequencias = document.querySelector("#tabela-frequencias");
+    tabela_frequencias = document.querySelector("#tabela-frequencias");
     const todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
     const todas_datas_aulas_td = tabela_frequencias.querySelectorAll("td:nth-child(1)")
     const horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];

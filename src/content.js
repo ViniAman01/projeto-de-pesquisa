@@ -1,4 +1,4 @@
-const tabela_frequencias = document.querySelector("#tabela-frequencias");
+tabela_frequencias = document.querySelector("#tabela-frequencias");
 const todas_datas_aulas_td = tabela_frequencias.querySelectorAll("td:nth-child(1)");
 const todos_horarios_aulas_td = tabela_frequencias.querySelectorAll("td.ifms-code");
 
