@@ -26,15 +26,26 @@ function excluirHorario(element){
 
 function adicionarHorario(element){
   const td = element.target.parentNode.parentNode;
-  const divs_horarios = td.querySelectorAll("div");
-  divs_horarios.forEach((e,i,a) => {
-    h1 = new Horario(e.innerText,':');
-    h2 = new Horario(a[i+1].innerText,':');
+  const p_horarios = td.querySelectorAll("p");
+  const value_novo_horario = td.querySelector("input").value;
+  const obj_novo_horario = new Horario(value_novo_horario,':');
+  let element_aux_horario;
 
-    if(h1.ehMaior(h2)){
+  p_horarios.forEach((e) => {
+    const obj_aux_horario = new Horario(e.innerText,':');
 
+    if(obj_aux_horario.ehMaior(obj_novo_horario)){
+      element_aux_horario = e;
+      return false; 
+    }else{
+      return true;
     }
   });
+
+  const element_novo_horario = document.createElement("p");
+  element_novo_horario.innerText = value_novo_horario;
+
+  element_aux_horario.insertAdjacentElement('beforebegin',)
 }
 
 (async function(){
