@@ -1,7 +1,40 @@
+function desfazerExclusao(element){
+  const div = element.target.parentNode;
+  const p = div.childNodes[0];
+  p.innerHTML = p.innerHTML.replace('<del>','');
+  p.innerHTML = p.innerHTML.replace('</del>','');
+
+  element.target.id = '';
+  element.target.className = 'bt-excluir';
+  element.target.innerText = 'Desfazer exclusao';
+  element.target.removeEventListener("click",desfazerExclusao);
+  element.target.addEventListener("click",excluirHorario);
+}
+
 function excluirHorario(element){
-  div = element.target.parentNode;
-  p = div.childNodes[0];
-  console.log(p.innerText);
+  const div = element.target.parentNode;
+  const p = div.childNodes[0];
+
+  p.innerHTML = '<del>' + p.innerHTML + '</del>';
+
+  element.target.innerText = 'Desfazer exclusao';
+  element.target.id = 'bt-editar';
+  element.target.className = '';
+  element.target.removeEventListener("click",excluirHorario);
+  element.target.addEventListener("click",desfazerExclusao);
+}
+
+function adicionarHorario(element){
+  const td = element.target.parentNode.parentNode;
+  const divs_horarios = td.querySelectorAll("div");
+  divs_horarios.forEach((e,i,a) => {
+    h1 = new Horario(e.innerText,':');
+    h2 = new Horario(a[i+1].innerText,':');
+
+    if(h1.ehMaior(h2)){
+
+    }
+  });
 }
 
 (async function(){
@@ -43,13 +76,21 @@ function excluirHorario(element){
 
         div_p_botao.insertAdjacentElement('beforeend', botao_excluir);
 
-        e_s_element.insertAdjacentElement('afterbegin', div_p_botao)
+        e_s_element.insertAdjacentElement('beforeend', div_p_botao)
       });
 
       dia_horarios_regulares_string = '';
       dia_horarios_regulares.forEach(e => {
         dia_horarios_regulares_string += e[0] + ' - ' + e[1] + '<br>';
       });
+
+      e_s_element.insertAdjacentHTML('beforeend','<br> <input type="time" step="1">');
+
+      botao_adicionar = document.createElement("button");
+      botao_adicionar.innerHTML = '<button id="bt-editar">Adicionar Horario</button>';
+      botao_adicionar.addEventListener("click", adicionarHorario);
+
+      e_s_element.insertAdjacentElement('beforeend',botao_adicionar);
 
       dia_data_element.innerHTML = dia_data_string;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
