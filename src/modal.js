@@ -1,9 +1,14 @@
+function excluirHorario(element){
+  div = element.target.parentNode;
+  p = div.childNodes[0];
+  console.log(p.innerText);
+}
+
 (async function(){
   const dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
   const horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
   const tabela = document.getElementById("tabela-irregulares");
 
-  linha_e_s_index = 0;
   dias_irregulares.forEach(dia_irregular => {
     dia_data = dia_irregular[0];
     e_s = dia_irregular[1];
@@ -17,26 +22,28 @@
 
       dia_data_string = dia_data[0] + '<br>' + dia_data[1];
 
-      e_s_index_botao = 0;
-      e_s.forEach(e => {
+      e_s.forEach((e,index) => {
+        div_p_botao = document.createElement("div");
 
-        if(e_s_index_botao % 2 == 0){
-          e_s_element.insertAdjacentHTML('beforeend', 'E:' + e);
+        if(index % 2 == 0){
+          prefix = 'E:'
         }else{
-          e_s_element.insertAdjacentHTML('beforeend', 'S:' + e);
+          prefix = 'S:'
         }
+
+        div_p_botao.insertAdjacentHTML('beforeend', '<p>' + prefix + e + '</p>');
 
         botao_excluir = document.createElement("button");
 
-        botao_excluir.innerHTML = `<button class="linha_e_s-${linha_e_s_index} bt-excluir" id="bt-excluir-${e_s_index_botao}">Excluir Horario</button> <br>`;
+        botao_excluir.className = 'bt-excluir';
 
-        botao_excluir.addEventListener("click", (e) => {
-          console.log(`class: ${e.target.className} id: ${e.target.id}`);
-        });
+        botao_excluir.innerText = 'Excluir Horario';
 
-        e_s_element.insertAdjacentElement('beforeend',botao_excluir);
+        botao_excluir.addEventListener("click", excluirHorario);
 
-        e_s_index_botao++;
+        div_p_botao.insertAdjacentElement('beforeend', botao_excluir);
+
+        e_s_element.insertAdjacentElement('afterbegin', div_p_botao)
       });
 
       dia_horarios_regulares_string = '';
@@ -46,8 +53,6 @@
 
       dia_data_element.innerHTML = dia_data_string;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
-
-      linha_e_s_index++;
     }
   });
   
