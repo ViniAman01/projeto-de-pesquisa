@@ -26,37 +26,40 @@ function excluirHorario(element){
 
 function adicionarHorario(element){
   const td = element.target.parentNode.parentNode;
-  const p_horarios = td.querySelectorAll("p");
   const value_novo_horario = td.querySelector("input").value;
-  const obj_novo_horario = new Horario(value_novo_horario,':');
-  let element_aux_horario;
+  if(value_novo_horario){
+    // const p_horarios = td.querySelectorAll("p");
+    // const obj_novo_horario = new Horario(value_novo_horario,':');
+    // let element_aux_horario;
+    //
+    // p_horarios.forEach((e) => {
+    //   const obj_aux_horario = new Horario(e.innerText,':');
+    //
+    //   if(obj_aux_horario.ehMaior(obj_novo_horario)){
+    //     element_aux_horario = e;
+    //     return false; 
+    //   }else{
+    //     return true;
+    //   }
+    // });
 
-  p_horarios.forEach((e) => {
-    const obj_aux_horario = new Horario(e.innerText,':');
-
-    if(obj_aux_horario.ehMaior(obj_novo_horario)){
-      element_aux_horario = e;
-      return false; 
-    }else{
-      return true;
-    }
-  });
-
-  const element_novo_horario = document.createElement("p");
-  element_novo_horario.innerText = value_novo_horario;
-
-  element_aux_horario.insertAdjacentElement('beforebegin',)
+    // const element_novo_horario = document.createElement("p");
+    // element_novo_horario.innerText = value_novo_horario;
+    //
+    // element_aux_horario.insertAdjacentElement('beforebegin',element_novo_horario);
+  }
 }
 
 (async function(){
-  const dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
+  const json_dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
+  const dias_irregulares = new Map(JSON.parse(json_dias_irregulares));
   const horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
   const tabela = document.getElementById("tabela-irregulares");
 
-  dias_irregulares.forEach(dia_irregular => {
-    dia_data = dia_irregular[0];
-    e_s = dia_irregular[1];
-    dia_horarios_regulares = horarios_regulares[dia_data[1]];
+  dias_irregulares.forEach((value,data) => {
+    dia_semana = value[0];
+    e_s = value[1];
+    dia_horarios_regulares = horarios_regulares[dia_semana];
     if(dia_horarios_regulares){
 
       linha = tabela.insertRow()
@@ -64,7 +67,7 @@ function adicionarHorario(element){
       e_s_element = linha.insertCell(1);
       dia_horarios_regulares_element = linha.insertCell(2);
 
-      dia_data_string = dia_data[0] + '<br>' + dia_data[1];
+      dia_data_string =  data + '<br>' + dia_semana;
 
       e_s.forEach((e,index) => {
         div_p_botao = document.createElement("div");
