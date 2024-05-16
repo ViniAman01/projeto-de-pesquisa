@@ -8,10 +8,10 @@ function desfazerExclusao(element){
   element.target.className = 'bt-excluir';
   element.target.innerText = 'Desfazer exclusao';
   element.target.removeEventListener("click",desfazerExclusao);
-  element.target.addEventListener("click",excluirHorario);
+  element.target.addEventListener("click",excluirHorarioOriginal);
 }
 
-function excluirHorario(element){
+function excluirHorarioOriginal(element){
   const div = element.target.parentNode;
   const p = div.childNodes[0];
 
@@ -20,11 +20,17 @@ function excluirHorario(element){
   element.target.innerText = 'Desfazer exclusao';
   element.target.id = 'bt-editar';
   element.target.className = '';
-  element.target.removeEventListener("click",excluirHorario);
+  element.target.removeEventListener("click",excluirHorarioOriginal);
   element.target.addEventListener("click",desfazerExclusao);
 }
 
-function criaCelulaES(e_s_array,e_s_element){
+function excluirHorarioAdicionado(element){
+  element.target.parentNode.remove();
+}
+
+function criaDivES(e_s_array, original_bool){
+  var e_s_div = document.createElement("div");
+
   e_s_array.forEach((e,index) => {
     let div_p_botao = document.createElement("div");
 
@@ -42,12 +48,34 @@ function criaCelulaES(e_s_array,e_s_element){
 
     botao_excluir.innerText = 'Excluir Horario';
 
-    botao_excluir.addEventListener("click", excluirHorario);
+    if(original_bool){
+      botao_excluir.addEventListener("click", excluirHorarioOriginal);
+    }else{
+      botao_excluir.addEventListener("click", excluirHorarioAdicionado);
+    }
 
     div_p_botao.insertAdjacentElement('beforeend', botao_excluir);
 
-    e_s_element.insertAdjacentElement('beforeend', div_p_botao)
+    e_s_div.insertAdjacentElement('beforeend', div_p_botao)
   });
+
+  return e_s_div;
+}
+
+function criaCelulaES(e_s_array,e_s_celula,original_bool){
+
+  const e_s_div = criaDivES(e_s_array,original_bool);
+
+  e_s_celula.insertAdjacentElement('beforeend', e_s_div)
+
+  e_s_celula.insertAdjacentHTML('beforeend','<br> <input type="time" step="1">');
+
+  botao_adicionar = document.createElement("button");
+  botao_adicionar.id = 'bt-editar';
+  botao_adicionar.innerText = 'Adicionar Horario';
+  botao_adicionar.addEventListener("click", adicionarHorario);
+
+  e_s_celula.insertAdjacentElement('beforeend',botao_adicionar);
 }
 
 async function adicionarHorario(element){
@@ -59,10 +87,15 @@ async function adicionarHorario(element){
     const key_dias_irregulares = td.parentNode.firstChild.innerText.split("\n")[0];
     const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
     const e_s_array = dia_e_s_array[1];
+    console.log(e_s_array);
     const obj_novo_horario = new Horario(value_novo_horario,':');
 
     e_s_array.every((e,index) => {
       let obj_aux_horario = new Horario(e,':');
+
+      if(obj_aux_horario.ehIgual(obj_novo_horario)){
+        return false;
+      }
 
       if(obj_aux_horario.ehMaior(obj_novo_horario)){
         e_s_array.splice(index,0,value_novo_horario);
@@ -72,8 +105,11 @@ async function adicionarHorario(element){
       return true;
     });
 
-    dia_e_s_array[1] = e_s_array;
+    td.firstChild.remove();
+    const e_s_div = criaDivES(e_s_array,false);
+    td.insertAdjacentElement('afterbegin',e_s_div);
 
+    dia_e_s_array[1] = e_s_array;
     dias_irregulares.set(key_dias_irregulares,dia_e_s_array); 
     json_dias_irregulares = JSON.stringify(Array.from(dias_irregulares));
     chrome.storage.local.set({'dias_irregulares': json_dias_irregulares});
@@ -93,29 +129,21 @@ async function adicionarHorario(element){
       e_s_array = value[1];
 
       linha = tabela.insertRow()
-      dia_data_element = linha.insertCell(0); 
-      e_s_element = linha.insertCell(1);
+      dia_data_celula = linha.insertCell(0); 
+      e_s_celula = linha.insertCell(1);
       dia_horarios_regulares_element = linha.insertCell(2);
 
       dia_data_string =  data + '<br>' + dia_semana;
 
-      criaCelulaES(e_s_array,e_s_element);
+      criaCelulaES(e_s_array,e_s_celula,true);
 
       dia_horarios_regulares_string = '';
       dia_horarios_regulares.forEach(e => {
         dia_horarios_regulares_string += e[0] + ' - ' + e[1] + '<br>';
       });
 
-      e_s_element.insertAdjacentHTML('beforeend','<br> <input type="time" step="1">');
-
-      botao_adicionar = document.createElement("button");
-      botao_adicionar.id = 'bt-editar';
-      botao_adicionar.innerText = 'Adicionar Horario';
-      botao_adicionar.addEventListener("click", adicionarHorario);
-
-      e_s_element.insertAdjacentElement('beforeend',botao_adicionar);
-
-      dia_data_element.innerHTML = dia_data_string;
+      
+      dia_data_celula.innerHTML = dia_data_string;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
     }
   });
