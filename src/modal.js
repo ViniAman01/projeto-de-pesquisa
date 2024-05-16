@@ -24,29 +24,59 @@ function excluirHorario(element){
   element.target.addEventListener("click",desfazerExclusao);
 }
 
-function adicionarHorario(element){
-  const td = element.target.parentNode.parentNode;
+function criaCelulaES(e_s_array,e_s_element){
+  e_s_array.forEach((e,index) => {
+    let div_p_botao = document.createElement("div");
+
+    if(index % 2 == 0){
+      prefix = 'E:'
+    }else{
+      prefix = 'S:'
+    }
+
+    div_p_botao.insertAdjacentHTML('beforeend', '<p>' + prefix + e + '</p>');
+
+    let botao_excluir = document.createElement("button");
+
+    botao_excluir.className = 'bt-excluir';
+
+    botao_excluir.innerText = 'Excluir Horario';
+
+    botao_excluir.addEventListener("click", excluirHorario);
+
+    div_p_botao.insertAdjacentElement('beforeend', botao_excluir);
+
+    e_s_element.insertAdjacentElement('beforeend', div_p_botao)
+  });
+}
+
+async function adicionarHorario(element){
+  const td = element.target.parentNode;
   const value_novo_horario = td.querySelector("input").value;
   if(value_novo_horario){
-    // const p_horarios = td.querySelectorAll("p");
-    // const obj_novo_horario = new Horario(value_novo_horario,':');
-    // let element_aux_horario;
-    //
-    // p_horarios.forEach((e) => {
-    //   const obj_aux_horario = new Horario(e.innerText,':');
-    //
-    //   if(obj_aux_horario.ehMaior(obj_novo_horario)){
-    //     element_aux_horario = e;
-    //     return false; 
-    //   }else{
-    //     return true;
-    //   }
-    // });
+    var json_dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
+    const dias_irregulares = new Map(JSON.parse(json_dias_irregulares));
+    const key_dias_irregulares = td.parentNode.firstChild.innerText.split("\n")[0];
+    const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
+    const e_s_array = dia_e_s_array[1];
+    const obj_novo_horario = new Horario(value_novo_horario,':');
 
-    // const element_novo_horario = document.createElement("p");
-    // element_novo_horario.innerText = value_novo_horario;
-    //
-    // element_aux_horario.insertAdjacentElement('beforebegin',element_novo_horario);
+    e_s_array.every((e,index) => {
+      let obj_aux_horario = new Horario(e,':');
+
+      if(obj_aux_horario.ehMaior(obj_novo_horario)){
+        e_s_array.splice(index,0,value_novo_horario);
+        return false; 
+      }
+
+      return true;
+    });
+
+    dia_e_s_array[1] = e_s_array;
+
+    dias_irregulares.set(key_dias_irregulares,dia_e_s_array); 
+    json_dias_irregulares = JSON.stringify(Array.from(dias_irregulares));
+    chrome.storage.local.set({'dias_irregulares': json_dias_irregulares});
   }
 }
 
@@ -58,9 +88,9 @@ function adicionarHorario(element){
 
   dias_irregulares.forEach((value,data) => {
     dia_semana = value[0];
-    e_s = value[1];
     dia_horarios_regulares = horarios_regulares[dia_semana];
     if(dia_horarios_regulares){
+      e_s_array = value[1];
 
       linha = tabela.insertRow()
       dia_data_element = linha.insertCell(0); 
@@ -69,29 +99,7 @@ function adicionarHorario(element){
 
       dia_data_string =  data + '<br>' + dia_semana;
 
-      e_s.forEach((e,index) => {
-        div_p_botao = document.createElement("div");
-
-        if(index % 2 == 0){
-          prefix = 'E:'
-        }else{
-          prefix = 'S:'
-        }
-
-        div_p_botao.insertAdjacentHTML('beforeend', '<p>' + prefix + e + '</p>');
-
-        botao_excluir = document.createElement("button");
-
-        botao_excluir.className = 'bt-excluir';
-
-        botao_excluir.innerText = 'Excluir Horario';
-
-        botao_excluir.addEventListener("click", excluirHorario);
-
-        div_p_botao.insertAdjacentElement('beforeend', botao_excluir);
-
-        e_s_element.insertAdjacentElement('beforeend', div_p_botao)
-      });
+      criaCelulaES(e_s_array,e_s_element);
 
       dia_horarios_regulares_string = '';
       dia_horarios_regulares.forEach(e => {
@@ -101,7 +109,8 @@ function adicionarHorario(element){
       e_s_element.insertAdjacentHTML('beforeend','<br> <input type="time" step="1">');
 
       botao_adicionar = document.createElement("button");
-      botao_adicionar.innerHTML = '<button id="bt-editar">Adicionar Horario</button>';
+      botao_adicionar.id = 'bt-editar';
+      botao_adicionar.innerText = 'Adicionar Horario';
       botao_adicionar.addEventListener("click", adicionarHorario);
 
       e_s_element.insertAdjacentElement('beforeend',botao_adicionar);
