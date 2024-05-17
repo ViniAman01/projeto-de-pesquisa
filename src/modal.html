@@ -1,6 +1,6 @@
 <div id="modal-html">
   <style>
-    dialog {
+    #modal {
       padding: 10px;
       position: fixed;
       top: 50%;
@@ -13,16 +13,16 @@
       width: 100%;
     }
     
-    dialog::backdrop {
+    #modal dialog::backdrop {
       background-color: rgb(0 0 0 / .3);
     }
 
-    dialog #cabecalho {
+    #modal #cabecalho {
       display: block;
       justify-content: center;
     }
 
-    dialog h2 {
+    #modal h2 {
       margin-bottom: 10px;
     }
 
@@ -107,7 +107,6 @@
       <div id="cabecalho">
         <h2>Hor&aacute;rios Irregulares</h2>
         <button id="bt-fechar">Fechar</button>
-        <button id="bt-editar">Editar</button>
         <button id="bt-salvar">Salvar Edicao</button>
       </div>
         <table id="tabela-irregulares">

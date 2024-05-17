@@ -37,7 +37,8 @@
       }
 
       .bt {
-        padding: 6px 12px;
+        padding: 5px 20px;
+        margin: 10px;
 
         font-family: inherit;
         font-size: 13px;
@@ -54,6 +55,7 @@
         transition: background-color 0.2s;
       }
       .bt-container {
+        display: flex;
         margin-top: 20px;
       }
       .bt:active {
@@ -69,21 +71,10 @@
   </head>
   <body>
     <h2>SUAP Extension</h2>
-    <table id="tabela-intervalos">
-       <tr>
-        <td>Segunda</td>
-        <td>Ter&#231;a</td>
-        <td>Quarta</td>
-        <td>Quinta</td>
-        <td>Sexta</td>
-      </tr>
-    </table>
     <div class="bt-container">
       <button id="bt-coletar" class="bt">Coletar novos dados da p&aacute;gina</button>
       <button id="bt-abrir-modal" class="bt">Abrir Modal</button>
-      <!-- <button id="btnHorarios"  class="btn">Verificar Hor&aacute;rios</button> -->
     </div>
     <script src="popup.js"></script>
-    <!-- <a href="tabela_horarios_irregulares.html">Hor&aacute;rios Irregulares</a> -->
   </body>
 </html>

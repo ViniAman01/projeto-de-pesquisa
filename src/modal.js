@@ -6,7 +6,7 @@ function desfazerExclusao(element){
 
   element.target.id = '';
   element.target.className = 'bt-excluir';
-  element.target.innerText = 'Desfazer exclusao';
+  element.target.innerText = 'Excluir Horario';
   element.target.removeEventListener("click",desfazerExclusao);
   element.target.addEventListener("click",excluirHorarioOriginal);
 }
@@ -25,8 +25,6 @@ function excluirHorarioOriginal(element){
 }
 
 async function excluirHorarioAdicionado(element){
-  var json_dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
-  const dias_irregulares = new Map(JSON.parse(json_dias_irregulares));
   const key_dias_irregulares = element.target.parentNode.parentNode.parentNode.parentNode.firstChild.innerText.split("\n")[0];
   const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
   const e_s_array = dia_e_s_array[1];
@@ -41,8 +39,6 @@ async function excluirHorarioAdicionado(element){
 
   dia_e_s_array[1] = e_s_array;
   dias_irregulares.set(key_dias_irregulares,dia_e_s_array); 
-  json_dias_irregulares = JSON.stringify(Array.from(dias_irregulares));
-  chrome.storage.local.set({'dias_irregulares': json_dias_irregulares});
   element.target.parentNode.remove();
 }
 
@@ -105,8 +101,6 @@ async function adicionarHorario(element){
   const td = element.target.parentNode;
   const value_novo_horario = td.querySelector("input").value;
   if(value_novo_horario){
-    var json_dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
-    const dias_irregulares = new Map(JSON.parse(json_dias_irregulares));
     const key_dias_irregulares = td.parentNode.firstChild.innerText.split("\n")[0];
     const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
     const e_s_array = dia_e_s_array[1];
@@ -144,34 +138,29 @@ async function adicionarHorario(element){
 
       dia_e_s_array[1] = e_s_array;
       dias_irregulares.set(key_dias_irregulares,dia_e_s_array); 
-      json_dias_irregulares = JSON.stringify(Array.from(dias_irregulares));
-      chrome.storage.local.set({'dias_irregulares': json_dias_irregulares});
     }
   }
 }
 
-(async function(){
-  const json_dias_irregulares = (await chrome.storage.local.get(['dias_irregulares']))['dias_irregulares'];
-  const dias_irregulares = new Map(JSON.parse(json_dias_irregulares));
-  const horarios_regulares = (await chrome.storage.local.get(['horarios_regulares']))['horarios_regulares'];
+{ 
   const tabela = document.getElementById("tabela-irregulares");
 
   dias_irregulares.forEach((value,data) => {
-    dia_semana = value[0];
-    dia_horarios_regulares = horarios_regulares[dia_semana];
+    const dia_semana = value[0];
+    const dia_horarios_regulares = horarios_regulares[dia_semana];
     if(dia_horarios_regulares){
-      e_s_array = value[1];
+      const e_s_array = value[1];
 
-      linha = tabela.insertRow()
-      dia_data_celula = linha.insertCell(0); 
-      e_s_celula = linha.insertCell(1);
-      dia_horarios_regulares_element = linha.insertCell(2);
+      const linha = tabela.insertRow()
+      const dia_data_celula = linha.insertCell(0); 
+      const e_s_celula = linha.insertCell(1);
+      const dia_horarios_regulares_element = linha.insertCell(2);
 
-      dia_data_string =  data + '<br>' + dia_semana;
+      const dia_data_string =  data + '<br>' + dia_semana;
 
       criaCelulaES(e_s_array,e_s_celula);
 
-      dia_horarios_regulares_string = '';
+      let dia_horarios_regulares_string = '';
       dia_horarios_regulares.forEach(e => {
         dia_horarios_regulares_string += e[0] + ' - ' + e[1] + '<br>';
       });
@@ -184,7 +173,7 @@ async function adicionarHorario(element){
   
   const modal = document.getElementById("modal");
   modal.showModal();  
-})()
+}
 
 document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
@@ -194,32 +183,4 @@ document.getElementById("bt-fechar").addEventListener("click", function() {
 document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
   modal.scroll({top: 0, left: 0, behavior: 'smooth'});
-});
-
-document.getElementById("bt-editar").addEventListener("click", function () {
-  const modal = document.getElementById("modal");
-  const coluna_central = modal.querySelectorAll("td:nth-child(2)");
-  coluna_central.forEach(e => {
-    e.setAttribute("contenteditable","true");
-    e.style.backgroundColor = '#ffffff';
-  });
-  this.style.display = 'none';
-  document.getElementById("bt-salvar").style.display = 'initial';
-});
-
-document.getElementById("bt-salvar").addEventListener("click", function() {
-  const modal = document.getElementById("modal");
-  const coluna_central = modal.querySelectorAll("td:nth-child(2)");
-  var i = 0;
-  coluna_central.forEach(e => {
-    e.setAttribute("contenteditable","false");
-    if(i % 2 == 0){
-      e.style.backgroundColor = 'rgb(247, 243, 243)';
-    }else{
-      e.style.backgroundColor = 'rgb(204, 203, 203)';
-    } 
-    i = i+1;
-  });
-  this.style.display = 'none';
-  document.getElementById("bt-editar").style.display = 'initial';
 });
