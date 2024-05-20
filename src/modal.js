@@ -24,7 +24,7 @@ function excluirHorarioOriginal(element){
   element.target.addEventListener("click",desfazerExclusao);
 }
 
-async function excluirHorarioAdicionado(element){
+function excluirHorarioAdicionado(element){
   const key_dias_irregulares = element.target.parentNode.parentNode.parentNode.parentNode.firstChild.innerText.split("\n")[0];
   const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
   const e_s_array = dia_e_s_array[1];
@@ -97,7 +97,7 @@ function criaCelulaES(e_s_array,e_s_celula){
   e_s_celula.insertAdjacentElement('beforeend',botao_adicionar);
 }
 
-async function adicionarHorario(element){
+function adicionarHorario(element){
   const td = element.target.parentNode;
   const value_novo_horario = td.querySelector("input").value;
   if(value_novo_horario){
@@ -119,6 +119,10 @@ async function adicionarHorario(element){
 
       if(obj_aux_horario.ehMaior(obj_novo_horario)){
         return false; 
+      }else{
+        if(index == e_s_array.length-1){
+          index_e_s_child = e_s_array.length
+        }
       }
 
       return true;
@@ -126,7 +130,7 @@ async function adicionarHorario(element){
 
     if(index_e_s_child != -1){
       const e_s_div_childs = td.firstChild.childNodes;
-      if(index_e_s_child == e_s_array.length-1){
+      if(index_e_s_child == e_s_array.length){
         const e_s_div = criaES(value_novo_horario + '*',e_s_array.length);
         td.firstChild.insertAdjacentElement('beforeend',e_s_div);
       }else{
@@ -178,7 +182,6 @@ async function adicionarHorario(element){
 document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
-
 
 document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
