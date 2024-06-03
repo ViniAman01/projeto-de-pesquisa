@@ -263,6 +263,17 @@ modal.showModal();
 function sortDiaSemana(){
   let array_dias_irregulares = [...dias_irregulares];
 
+  bt_dia = document.getElementById("bt-dia");
+  let direction;
+
+  if(bt_dia.getAttribute("sort-dir") == "asc"){
+    direction = -1
+    bt_dia.setAttribute("sort-dir","desc");
+  }else{
+    direction = 1;
+    bt_dia.setAttribute("sort-dir","asc");
+  }
+
   dias_semana = {
     "Segunda-feira": 0,
     "Terça-feira": 1,
@@ -271,7 +282,7 @@ function sortDiaSemana(){
     "Sexta-feira": 4,
   }
 
-  array_dias_irregulares.sort((a,b) => (dias_semana[a[1][0]]-dias_semana[b[1][0]]));
+  array_dias_irregulares.sort((a,b) => (dias_semana[a[1][0]]-dias_semana[b[1][0]])*direction);
 
   const dias_irregulares_map = new Map(array_dias_irregulares);
 
@@ -284,7 +295,7 @@ document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
 
-document.getElementById("bt-ordenar").addEventListener("click", sortDiaSemana);
+document.getElementById("bt-dia").addEventListener("click", sortDiaSemana);
 
 document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
