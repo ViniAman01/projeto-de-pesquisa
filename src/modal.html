@@ -32,6 +32,12 @@
       background-color: #fb0000;
     }
 
+    #bt-ordenar{
+      margin-bottom: 10px;
+      border-color: #4b0000;
+      background-color: #00a000;
+    }
+
     .bt-adicionar{
       margin-bottom: 10px;
       border-color: #0026ff;
@@ -55,6 +61,11 @@
     #tabela-irregulares td,th{
       border: 1px solid #dddddd;
       padding: 10px;
+    }
+
+    #tabela-irregulares th {
+      color: rgb(0,0,0);
+      text-align: center;
     }
     
     #tabela-irregulares tr:nth-child(odd) td {
@@ -100,21 +111,40 @@
       background-color: #fb0000;
       padding: 10px;
     }
-    </style>
+    #tabela-irregulares th::after {
+      position: absolute;
+      right: 0.5rem;
+    }
+
+    #tabela-irregulares th [data-dir="asc"]::after {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpolygon points='0, 0 8,0 4,8 8' fill='%23818688'/%3E%3C/svg%3E");
+    }
+
+    #tabela-irregulares th [data-dir="desc"]::after {
+      content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpolygon points='4 0,8 8,0 8' fill='%23818688'/%3E%3C/svg%3E");
+    }
+
+  </style>
 
   <dialog id="modal">
       <div id="cabecalho">
         <h2>Hor&aacute;rios Irregulares</h2>
         <button id="bt-fechar">Fechar</button>
-        <button id="bt-salvar">Salvar Edicao</button>
+        <button id="bt-ordenar">Ordernar</button>
       </div>
-        <table id="tabela-irregulares">
-        <th style="text-align: center;">Dia</th>
-        <th style="text-align: center;">Entrada e Sa&iacute;da</th>
-        <th style="text-align: center;">Hor&aacute;rios de Aula e PE</th>
+      <table id="tabela-irregulares">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Dia da Semana</th>
+            <th>Entrada e Sa&iacute;da</th>
+            <th>Hor&aacute;rios de Aula e PE</th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela">
+        </tbody>
       </table>
-      <button id="bt-voltar-para-topo">&#8593;</button>
+    <button id="bt-voltar-para-topo">&#8593;</button>
   </dialog>
-
   <script src="modal.js"></script>
 </div>

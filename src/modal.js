@@ -212,21 +212,29 @@ function adicionarHorario(element){
   }
 }
 
+function createTable(dias_irregulares_map)
 { 
-  const tabela = document.getElementById("tabela-irregulares");
+  const old_tbody = document.getElementById("corpo-tabela");
+  if(old_tbody){
+    old_tbody.remove();
+  }
 
-  dias_irregulares.forEach((value,data) => {
+  const tbody = document.createElement("tbody");
+  tbody.id = "corpo-tabela";
+
+  dias_irregulares_map.forEach((value,data) => {
     const dia_semana = value[0];
     const dia_horarios_regulares = horarios_regulares[dia_semana];
     if(dia_horarios_regulares){
       const e_s_array = value[1];
 
-      const linha = tabela.insertRow()
-      const dia_data_celula = linha.insertCell(0); 
-      const e_s_celula = linha.insertCell(1);
-      const dia_horarios_regulares_element = linha.insertCell(2);
+      const linha = tbody.insertRow()
+      const data_celula = linha.insertCell(0); 
+      const dia_semana_celula = linha.insertCell(1); 
+      const e_s_celula = linha.insertCell(2);
+      const dia_horarios_regulares_element = linha.insertCell(3);
 
-      const dia_data_string =  data + '<br>' + dia_semana;
+      const data_string =  data;
 
       criaCelulaES(e_s_array,e_s_celula);
 
@@ -236,18 +244,47 @@ function adicionarHorario(element){
       });
 
       
-      dia_data_celula.innerHTML = dia_data_string;
+      data_celula.innerHTML = data_string;
+      dia_semana_celula.innerText = dia_semana;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
     }
   });
+
+  const tabela = document.getElementById("tabela-irregulares");
+  tabela.insertAdjacentElement("beforeend",tbody);
   
   const modal = document.getElementById("modal");
   modal.showModal();  
 }
 
+modal = document.getElementById("modal");
+modal.showModal();  
+
+function sortDiaSemana(){
+  let array_dias_irregulares = [...dias_irregulares];
+
+  dias_semana = {
+    "Segunda-feira": 0,
+    "Terça-feira": 1,
+    "Quarta-feira": 2,
+    "Quinta-feira": 3,
+    "Sexta-feira": 4,
+  }
+
+  array_dias_irregulares.sort((a,b) => (dias_semana[a[1][0]]-dias_semana[b[1][0]]));
+
+  const dias_irregulares_map = new Map(array_dias_irregulares);
+
+  createTable(dias_irregulares_map);
+}
+
+createTable(dias_irregulares);
+
 document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
+
+document.getElementById("bt-ordenar").addEventListener("click", sortDiaSemana);
 
 document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
