@@ -257,24 +257,34 @@ function createTable(dias_irregulares_map)
   modal.showModal();  
 }
 
-modal = document.getElementById("modal");
-modal.showModal();  
 
-function sortDiaSemana(){
+function resetSortDirAtt(element){
+  document.querySelectorAll("th button").forEach(e => {
+    if(e != element.target){
+      e.removeAttribute("sort-dir");
+    }
+  });
+};
+
+function invertSortDirAtt(element){
+  if(element.target.getAttribute("sort-dir") == "asc"){
+    element.target.setAttribute("sort-dir","desc");
+    return -1;
+  }else{
+    element.target.setAttribute("sort-dir","asc");
+    return 1;
+  }
+};
+
+function sortDiaSemana(element){
+
+  resetSortDirAtt(element);
+  const direction = invertSortDirAtt(element);
+
   let array_dias_irregulares = [...dias_irregulares];
 
-  bt_dia = document.getElementById("bt-dia");
-  let direction;
 
-  if(bt_dia.getAttribute("sort-dir") == "asc"){
-    direction = -1
-    bt_dia.setAttribute("sort-dir","desc");
-  }else{
-    direction = 1;
-    bt_dia.setAttribute("sort-dir","asc");
-  }
-
-  dias_semana = {
+  const dias_semana = {
     "Segunda-feira": 0,
     "Terça-feira": 1,
     "Quarta-feira": 2,
@@ -289,13 +299,39 @@ function sortDiaSemana(){
   createTable(dias_irregulares_map);
 }
 
+function sortData(element){
+
+  resetSortDirAtt(element);
+  const direction = invertSortDirAtt(element);
+
+  let array_dias_irregulares = [...dias_irregulares];
+
+  array_dias_irregulares.sort((a,b) => {
+    const [dia_a, mes_a, ano_a] = a[0].split('/').map(Number);
+    const [dia_b, mes_b, ano_b] = b[0].split('/').map(Number);
+
+    const data_a = new Date(ano_a,mes_a-1,dia_a);
+    const data_b = new Date(ano_b,mes_b-1,dia_b);
+
+    return (data_a-data_b)*direction;
+  });
+
+  const dias_irregulares_map = new Map(array_dias_irregulares);
+
+  createTable(dias_irregulares_map);
+}
+
 createTable(dias_irregulares);
+
+modal = document.getElementById("modal");
+modal.showModal();  
 
 document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
 
 document.getElementById("bt-dia").addEventListener("click", sortDiaSemana);
+document.getElementById("bt-data").addEventListener("click", sortData);
 
 document.getElementById("bt-voltar-para-topo").addEventListener("click", function(){
   const modal = document.getElementById("modal");
