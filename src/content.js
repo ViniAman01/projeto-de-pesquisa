@@ -1,5 +1,6 @@
 horarios_regulares = new Object;
-dias_irregulares = new Map; 
+dias_regulares_irregulares = new Map; 
+char_eh_aula = new Array;
 
 {
   const tabela_frequencias = document.querySelector("#tabela-frequencias");
@@ -8,7 +9,6 @@ dias_irregulares = new Map;
   {
     let todos_horarios_aulas_td = tabela_frequencias.querySelectorAll("td.ifms-code");
 
-    let char_eh_aula = new Array;
     todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
 
     let dia_semana_aula_strings = new Array;
@@ -131,35 +131,40 @@ dias_irregulares = new Map;
     const todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
     
     for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
-      const entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
-      const dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
-      if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
-        const dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
-        bool = true;
-        k = 0;
-        while(bool && dia_horarios_regulares && k < dia_horarios_regulares.length){
-          let aux_intervalo_aula_para_comparacao = new Intervalo(dia_horarios_regulares[k][0], dia_horarios_regulares[k][1], ':');
-          let j = 0;
-          let bool = false;
-          while(j < entrada_saida.length){
-            let aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
-            if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
-              bool = true;
+      if(char_eh_aula[i] == 'A'){
+        const entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+        const dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
+        if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
+          const dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
+          bool = true;
+          k = 0;
+          while(bool && dia_horarios_regulares && k < dia_horarios_regulares.length){
+            let aux_intervalo_aula_para_comparacao = new Intervalo(dia_horarios_regulares[k][0], dia_horarios_regulares[k][1], ':');
+            let j = 0;
+            let bool = false;
+            while(j < entrada_saida.length){
+              let aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
+              if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
+                bool = true;
+              }
+              j = j+2;
             }
-            j = j+2;
+            if(!bool){
+              dias_regulares_irregulares.set(dia_data_string[0],['Irregular',dia_data_string[1],entrada_saida]);
+            }else{
+              dias_regulares_irregulares.set(dia_data_string[0],['Regular',dia_data_string[1],entrada_saida]);
+            }
+            k++;
           }
-          if(!bool){
-            dias_irregulares.set(dia_data_string[0],[dia_data_string[1],entrada_saida]);
-          }
-          k++;
         }
-      }
-      else{
-        if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
-          dias_irregulares.set(dia_data_string[0],[dia_data_string[1],entrada_saida]);
+        else{
+          if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
+            dias_regulares_irregulares.set(dia_data_string[0],['Irregular',dia_data_string[1],entrada_saida]);
+          }else{
+            dias_regulares_irregulares.set(dia_data_string[0],['Regular',dia_data_string[1],entrada_saida]);
+          }
         }
       }
     }
   }
-
 }

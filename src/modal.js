@@ -1,4 +1,4 @@
-function getKeyDiasIrregulares(element){
+function getKeyDiasRegIrreg(element){
   const className = element.target.className;
   if(className == 'bt-excluir' || className == 'bt-desfazer'){
     return element.target.parentNode.parentNode.parentNode.parentNode.firstChild.innerText.split("\n")[0];
@@ -8,16 +8,16 @@ function getKeyDiasIrregulares(element){
     return text.split("\n")[0];
   }
 }
-function getDiasIrregulares(element){
-  const dia_e_s_array = dias_irregulares.get(getKeyDiasIrregulares(element));
-  return dia_e_s_array[1];
+function getDiasRegIrregES(element){
+  const dia_e_s_array = dias_regulares_irregulares.get(getKeyDiasRegIrreg(element));
+  return dia_e_s_array[2];
 }
 
-function setDiasIrregulares(element,e_s_array_new){
-  const  key_dias_irregulares = getKeyDiasIrregulares(element);
-  const dia_e_s_array = dias_irregulares.get(key_dias_irregulares);
-  dia_e_s_array[1] = e_s_array_new;
-  dias_irregulares.set(key_dias_irregulares,dia_e_s_array); 
+function setDiasRegIrregES(element,e_s_array_new){
+  const  key_dias_regulares_irregulares = getKeyDiasRegIrreg(element);
+  const dia_e_s_array = dias_regulares_irregulares.get(key_dias_regulares_irregulares);
+  dia_e_s_array[2] = e_s_array_new;
+  dias_regulares_irregulares.set(key_dias_regulares_irregulares,dia_e_s_array); 
 }
 
 function sortEShtml(element){
@@ -47,7 +47,7 @@ function sortEShtml(element){
 }
 
 function changeMapHorarioOriginal(element,operation){
-  e_s_array = getDiasIrregulares(element);
+  e_s_array = getDiasRegIrregES(element);
   e_s = element.target.parentNode.childNodes[0].innerText;
   e_s = e_s.replace('E:','');
   e_s = e_s.replace('S:','');
@@ -62,7 +62,7 @@ function changeMapHorarioOriginal(element,operation){
     if(operation == 'd'){
       e_s_array[index] = e_s_array[index].replace('-','');
     }
-    setDiasIrregulares(element,e_s_array);
+    setDiasRegIrregES(element,e_s_array);
   }
   sortEShtml(element);
 }
@@ -168,7 +168,7 @@ function adicionarHorario(element){
   const td = element.target.parentNode;
   const value_novo_horario = td.querySelector("input").value;
   if(value_novo_horario){
-    const e_s_array = getDiasIrregulares(element);
+    const e_s_array = getDiasRegIrregES(element);
     const obj_novo_horario = new Horario(value_novo_horario,':');
     let index_e_s_child;
 
@@ -206,13 +206,13 @@ function adicionarHorario(element){
 
       e_s_array.splice(index_e_s_child,0,value_novo_horario + '*');
 
-      setDiasIrregulares(element,e_s_array);
+      setDiasRegIrregES(element,e_s_array);
     }
     sortEShtml(element);
   }
 }
 
-function createTable(dias_irregulares_map)
+function createTable(dias_regulares_irregulares_map)
 { 
   const old_tbody = document.getElementById("corpo-tabela");
   if(old_tbody){
@@ -222,17 +222,19 @@ function createTable(dias_irregulares_map)
   const tbody = document.createElement("tbody");
   tbody.id = "corpo-tabela";
 
-  dias_irregulares_map.forEach((value,data) => {
-    const dia_semana = value[0];
+  dias_regulares_irregulares_map.forEach((value,data) => {
+    const regularidade = value[0];
+    const dia_semana = value[1];
     const dia_horarios_regulares = horarios_regulares[dia_semana];
     if(dia_horarios_regulares){
-      const e_s_array = value[1];
+      const e_s_array = value[2];
 
       const linha = tbody.insertRow()
       const data_celula = linha.insertCell(0); 
       const dia_semana_celula = linha.insertCell(1); 
-      const e_s_celula = linha.insertCell(2);
-      const dia_horarios_regulares_element = linha.insertCell(3);
+      const regularidade_celula = linha.insertCell(2); 
+      const e_s_celula = linha.insertCell(3);
+      const dia_horarios_regulares_element = linha.insertCell(4);
 
       const data_string =  data;
 
@@ -246,6 +248,7 @@ function createTable(dias_irregulares_map)
       
       data_celula.innerHTML = data_string;
       dia_semana_celula.innerText = dia_semana;
+      regularidade_celula.innerText = regularidade;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
     }
   });
@@ -281,7 +284,7 @@ function sortDiaSemana(element){
   resetSortDirAtt(element);
   const direction = invertSortDirAtt(element);
 
-  let array_dias_irregulares = [...dias_irregulares];
+  let array_dias_regulares_irregulares = [...dias_regulares_irregulares];
 
 
   const dias_semana = {
@@ -292,11 +295,11 @@ function sortDiaSemana(element){
     "Sexta-feira": 4,
   }
 
-  array_dias_irregulares.sort((a,b) => (dias_semana[a[1][0]]-dias_semana[b[1][0]])*direction);
+  array_dias_regulares_irregulares.sort((a,b) => (dias_semana[a[1][1]]-dias_semana[b[1][1]])*direction);
 
-  const dias_irregulares_map = new Map(array_dias_irregulares);
+  const dias_regulares_irregulares_map = new Map(array_dias_regulares_irregulares);
 
-  createTable(dias_irregulares_map);
+  createTable(dias_regulares_irregulares_map);
 }
 
 function sortData(element){
@@ -304,9 +307,9 @@ function sortData(element){
   resetSortDirAtt(element);
   const direction = invertSortDirAtt(element);
 
-  let array_dias_irregulares = [...dias_irregulares];
+  let array_dias_regulares_irregulares = [...dias_regulares_irregulares];
 
-  array_dias_irregulares.sort((a,b) => {
+  array_dias_regulares_irregulares.sort((a,b) => {
     const [dia_a, mes_a, ano_a] = a[0].split('/').map(Number);
     const [dia_b, mes_b, ano_b] = b[0].split('/').map(Number);
 
@@ -316,12 +319,12 @@ function sortData(element){
     return (data_a-data_b)*direction;
   });
 
-  const dias_irregulares_map = new Map(array_dias_irregulares);
+  const dias_regulares_irregulares_map = new Map(array_dias_regulares_irregulares);
 
-  createTable(dias_irregulares_map);
+  createTable(dias_regulares_irregulares_map);
 }
 
-createTable(dias_irregulares);
+createTable(dias_regulares_irregulares);
 
 modal = document.getElementById("modal");
 modal.showModal();  
