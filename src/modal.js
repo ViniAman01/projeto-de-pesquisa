@@ -265,8 +265,7 @@ function recreateHTMLTable(linhas){
 
   linhas.forEach(l => new_tbody.insertAdjacentElement('beforeend',l));
 
-  const tabela = document.getElementById("tabela-irregulares");
-  tabela.insertAdjacentElement('beforeend',new_tbody);
+  document.getElementById("tabela-irregulares").insertAdjacentElement('beforeend',new_tbody);
 }
 
 function resetSortDirAtt(element){
@@ -309,6 +308,7 @@ function sortDiaSemana(element){
   console.log(linhas_tabela_regirreg);
 
   recreateHTMLTable(linhas_tabela_regirreg);
+  organizaCorLinhas(linhas_tabela_regirreg);
 }
 
 function sortData(element){
@@ -329,28 +329,39 @@ function sortData(element){
   });
 
   recreateHTMLTable(linhas_tabela_regirreg);
+  organizaCorLinhas(linhas_tabela_regirreg);
+}
+
+function organizaCorLinhas(linhas_tabela_regirreg){
+  const linhas_tabela_regirreg_2 = document.querySelectorAll("#modal #tabela-irregulares #corpo-tabela tr");
+
+  let index = 0;
+  linhas_tabela_regirreg_2.forEach(l => {
+    if(l.style.display != 'none'){
+      if(index % 2 != 0){
+        l.style.backgroundColor = 'rgb(204, 203, 203)';
+      }else{
+        l.style.backgroundColor = 'rgb(247, 243, 243)';
+      }
+      index++;
+    }
+  })
 }
 
 function filterRegIrreg(element){
-  let new_dias_regulares_irregulares_array;
+  const linhas_tabela_regirreg = document.querySelectorAll("#modal #tabela-irregulares #corpo-tabela tr");
+  let style;
   if(!element.target.checked){
-    if(element.target.id == 'checkbox-regular'){
-      new_dias_regulares_irregulares_array = [...visualizacao_dias_regirreg_map].filter(item => item[1][0] == 'Irregular');
-    }
-    else{
-      new_dias_regulares_irregulares_array = [...visualizacao_dias_regirreg_map].filter(item => item[1][0] == 'Regular');
-    }
+    style = 'none';
   }else{
-    if(element.target.id == 'checkbox-regular'){
-      new_dias_regulares_irregulares_array = [...dias_regulares_irregulares].filter(item => item[1][0] == 'Regular');
-      new_dias_regulares_irregulares_array.concat([...visualizacao_dias_regirreg_map]);
-    }else{
-      new_dias_regulares_irregulares_array = [...dias_regulares_irregulares].filter(item => item[1][0] == 'Irregular');
-      new_dias_regulares_irregulares_array.concat([...visualizacao_dias_regirreg_map]);
-    }
+    style = '';
   }
-  visualizacao_dias_regirreg_map = new Map(new_dias_regulares_irregulares_array);
-  createTable(visualizacao_dias_regirreg_map);
+  linhas_tabela_regirreg.forEach((e,index) => {
+    if(e.children[2].innerText == element.target.id){
+      e.style.display = style;
+    }
+  });
+  organizaCorLinhas(linhas_tabela_regirreg);
 }
 
 createTable(dias_regulares_irregulares);
@@ -362,9 +373,9 @@ document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
 
-document.getElementById("checkbox-regular").addEventListener("change", filterRegIrreg);
+document.getElementById("Regular").addEventListener("change", filterRegIrreg);
 
-document.getElementById("checkbox-irregular").addEventListener("change", filterRegIrreg);
+document.getElementById("Irregular").addEventListener("change", filterRegIrreg);
 
 document.getElementById("bt-dia").addEventListener("click", sortDiaSemana);
 document.getElementById("bt-data").addEventListener("click", sortData);
