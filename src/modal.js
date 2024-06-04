@@ -94,7 +94,7 @@ function excluirHorarioOriginal(element){
 }
 
 function excluirHorarioAdicionado(element){
-  const e_s_array = getDiasIrregulares(element);
+  const e_s_array = getDiasRegIrregES(element);
   const e_s_div_elements = element.target.parentNode.parentNode.querySelectorAll("p");
 
   let index_horario_exclusao = 0;
@@ -103,7 +103,7 @@ function excluirHorarioAdicionado(element){
   }
 
   e_s_array.splice(index_horario_exclusao,1);
-  setDiasIrregulares(element,e_s_array);
+  setDiasRegIrregES(element,e_s_array);
   const div_element = element.target.parentNode.parentNode;
   element.target.parentNode.remove();
   sortEShtml(div_element);
@@ -253,13 +253,21 @@ function createTable(dias_regulares_irregulares_map)
     }
   });
 
-  const tabela = document.getElementById("tabela-irregulares");
-  tabela.insertAdjacentElement("beforeend",tbody);
-  
-  const modal = document.getElementById("modal");
-  modal.showModal();  
+  document.getElementById("tabela-irregulares").insertAdjacentElement("beforeend",tbody);
 }
 
+function recreateHTMLTable(linhas){
+  const old_tbody = document.getElementById("corpo-tabela");
+  old_tbody.remove();
+
+  const new_tbody = document.createElement("tbody");
+  new_tbody.id = 'corpo-tabela';
+
+  linhas.forEach(l => new_tbody.insertAdjacentElement('beforeend',l));
+
+  const tabela = document.getElementById("tabela-irregulares");
+  tabela.insertAdjacentElement('beforeend',new_tbody);
+}
 
 function resetSortDirAtt(element){
   document.querySelectorAll("th button").forEach(e => {
@@ -284,8 +292,9 @@ function sortDiaSemana(element){
   resetSortDirAtt(element);
   const direction = invertSortDirAtt(element);
 
-  let array_dias_regulares_irregulares = [...dias_regulares_irregulares];
+  let linhas_tabela_regirreg = [...document.querySelectorAll("#modal #corpo-tabela tr")];
 
+  console.log(linhas_tabela_regirreg);
 
   const dias_semana = {
     "Segunda-feira": 0,
@@ -295,11 +304,11 @@ function sortDiaSemana(element){
     "Sexta-feira": 4,
   }
 
-  array_dias_regulares_irregulares.sort((a,b) => (dias_semana[a[1][1]]-dias_semana[b[1][1]])*direction);
+  linhas_tabela_regirreg.sort((a,b) => (dias_semana[a.children[1].innerText]-dias_semana[b.children[1].innerText])*direction);
 
-  const dias_regulares_irregulares_map = new Map(array_dias_regulares_irregulares);
+  console.log(linhas_tabela_regirreg);
 
-  createTable(dias_regulares_irregulares_map);
+  recreateHTMLTable(linhas_tabela_regirreg);
 }
 
 function sortData(element){
@@ -307,11 +316,11 @@ function sortData(element){
   resetSortDirAtt(element);
   const direction = invertSortDirAtt(element);
 
-  let array_dias_regulares_irregulares = [...dias_regulares_irregulares];
+  let linhas_tabela_regirreg = [...document.querySelectorAll("#modal #corpo-tabela tr")];
 
-  array_dias_regulares_irregulares.sort((a,b) => {
-    const [dia_a, mes_a, ano_a] = a[0].split('/').map(Number);
-    const [dia_b, mes_b, ano_b] = b[0].split('/').map(Number);
+  linhas_tabela_regirreg.sort((a,b) => {
+    const [dia_a, mes_a, ano_a] = a.children[0].innerText.split('/').map(Number);
+    const [dia_b, mes_b, ano_b] = b.children[0].innerText.split('/').map(Number);
 
     const data_a = new Date(ano_a,mes_a-1,dia_a);
     const data_b = new Date(ano_b,mes_b-1,dia_b);
@@ -319,9 +328,29 @@ function sortData(element){
     return (data_a-data_b)*direction;
   });
 
-  const dias_regulares_irregulares_map = new Map(array_dias_regulares_irregulares);
+  recreateHTMLTable(linhas_tabela_regirreg);
+}
 
-  createTable(dias_regulares_irregulares_map);
+function filterRegIrreg(element){
+  let new_dias_regulares_irregulares_array;
+  if(!element.target.checked){
+    if(element.target.id == 'checkbox-regular'){
+      new_dias_regulares_irregulares_array = [...visualizacao_dias_regirreg_map].filter(item => item[1][0] == 'Irregular');
+    }
+    else{
+      new_dias_regulares_irregulares_array = [...visualizacao_dias_regirreg_map].filter(item => item[1][0] == 'Regular');
+    }
+  }else{
+    if(element.target.id == 'checkbox-regular'){
+      new_dias_regulares_irregulares_array = [...dias_regulares_irregulares].filter(item => item[1][0] == 'Regular');
+      new_dias_regulares_irregulares_array.concat([...visualizacao_dias_regirreg_map]);
+    }else{
+      new_dias_regulares_irregulares_array = [...dias_regulares_irregulares].filter(item => item[1][0] == 'Irregular');
+      new_dias_regulares_irregulares_array.concat([...visualizacao_dias_regirreg_map]);
+    }
+  }
+  visualizacao_dias_regirreg_map = new Map(new_dias_regulares_irregulares_array);
+  createTable(visualizacao_dias_regirreg_map);
 }
 
 createTable(dias_regulares_irregulares);
@@ -332,6 +361,10 @@ modal.showModal();
 document.getElementById("bt-fechar").addEventListener("click", function() {
   modal.close();
 });
+
+document.getElementById("checkbox-regular").addEventListener("change", filterRegIrreg);
+
+document.getElementById("checkbox-irregular").addEventListener("change", filterRegIrreg);
 
 document.getElementById("bt-dia").addEventListener("click", sortDiaSemana);
 document.getElementById("bt-data").addEventListener("click", sortData);

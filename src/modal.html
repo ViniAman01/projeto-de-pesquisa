@@ -135,12 +135,34 @@
     #tabela-irregulares th button[sort-dir="asc"]::after {
       content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpolygon points='4 0,8 8,0 8' fill='%23818688'/%3E%3C/svg%3E");
     }
+
+    #modal #cabecalho p,
+    #modal #cabecalho label {
+      font:
+        1rem 'Fira Sans',
+        sans-serif;
+      font-size: 20px;
+    }
+
+    #modal #cabecalho input {
+      margin: 0.8rem;
+    }
   </style>
 
   <dialog id="modal">
       <div id="cabecalho">
         <h2>Hor&aacute;rios Irregulares</h2>
-        <button id="bt-fechar">Fechar</button>
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+          <button id="bt-fechar">Fechar</button>
+          <div>
+            <input type="checkbox" id="checkbox-regular" checked/>
+            <label for="checkbox-regular">Regulares</label>
+          </div>
+          <div>
+            <input type="checkbox" id="checkbox-irregular" checked/>
+            <label for="checkbox-irregular">Irregulares</label>
+          </div>
+        </div>
       </div>
       <table id="tabela-irregulares">
         <thead>
