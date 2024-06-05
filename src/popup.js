@@ -5,7 +5,7 @@ async function fetchHTML() {
   }
   let modal_nova_html = await fetch(chrome.runtime.getURL("modal.html"));
   modal_nova_html = await modal_nova_html.text();
-  document.body.insertAdjacentHTML('beforeend', modal_nova_html);
+  document.querySelector("html").insertAdjacentHTML('beforeend', modal_nova_html);
 }
 
 document.getElementById("bt-coletar").addEventListener("click", function () {
