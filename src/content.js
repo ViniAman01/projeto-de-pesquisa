@@ -9,14 +9,14 @@ char_eh_aula = new Array;
   {
     let todos_horarios_aulas_td = tabela_frequencias.querySelectorAll("td.ifms-code");
 
-    todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText[34]));
+    todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText.indexOf('AULA')));
 
     let dia_semana_aula_strings = new Array;
     let indices_dia_semana = new Array;
 
     let i;
     for(i = 0; i < todas_datas_aulas_td.length; i++){
-      if(char_eh_aula[i] == 'A'){
+      if(char_eh_aula[i] != -1){
         let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
         if(!dia_semana_aula_strings.includes(data)){
           dia_semana_aula_strings.push(data);
@@ -131,17 +131,17 @@ char_eh_aula = new Array;
     const todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
     
     for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
-      if(char_eh_aula[i] == 'A'){
+      if(char_eh_aula[i] != -1){
         const entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
         const dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
         if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
           const dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
-          bool = true;
+          let bool = true;
           k = 0;
           while(bool && dia_horarios_regulares && k < dia_horarios_regulares.length){
             let aux_intervalo_aula_para_comparacao = new Intervalo(dia_horarios_regulares[k][0], dia_horarios_regulares[k][1], ':');
             let j = 0;
-            let bool = false;
+            bool = false;
             while(j < entrada_saida.length){
               let aux_intervalo_e_s_para_comparacao = new Intervalo(entrada_saida[j], entrada_saida[j+1],':');
               if(aux_intervalo_aula_para_comparacao.estaContidoEm(aux_intervalo_e_s_para_comparacao)){
