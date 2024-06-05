@@ -333,16 +333,16 @@ function sortData(element){
 }
 
 function organizaCorLinhas(linhas_tabela_regirreg){
-  const linhas_tabela_regirreg_2 = document.querySelectorAll("#modal #tabela-irregulares #corpo-tabela tr");
-
   let index = 0;
-  linhas_tabela_regirreg_2.forEach(l => {
+  linhas_tabela_regirreg.forEach(l => {
     if(l.style.display != 'none'){
+      let color;
       if(index % 2 != 0){
-        l.style.backgroundColor = 'rgb(204, 203, 203)';
+        color = 'rgb(247, 243, 243)';
       }else{
-        l.style.backgroundColor = 'rgb(247, 243, 243)';
+        color = 'rgb(204, 203, 203)';
       }
+      l.childNodes.forEach(td => td.style.backgroundColor = color);
       index++;
     }
   })
