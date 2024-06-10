@@ -293,8 +293,6 @@ function sortDiaSemana(element){
 
   let linhas_tabela_regirreg = [...document.querySelectorAll("#modal #corpo-tabela tr")];
 
-  console.log(linhas_tabela_regirreg);
-
   const dias_semana = {
     "Segunda-feira": 0,
     "Terça-feira": 1,
@@ -304,8 +302,6 @@ function sortDiaSemana(element){
   }
 
   linhas_tabela_regirreg.sort((a,b) => (dias_semana[a.children[1].innerText]-dias_semana[b.children[1].innerText])*direction);
-
-  console.log(linhas_tabela_regirreg);
 
   recreateHTMLTable(linhas_tabela_regirreg);
   organizaCorLinhas(linhas_tabela_regirreg);

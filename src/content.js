@@ -1,22 +1,44 @@
 horarios_regulares = new Object;
 dias_regulares_irregulares = new Map; 
-char_eh_aula = new Array;
+index_eh_aula = new Array;
 
 {
   const tabela_frequencias = document.querySelector("#tabela-frequencias");
   const todas_datas_aulas_td = tabela_frequencias.querySelectorAll("td:nth-child(1)")
+  const situacao = tabela_frequencias.querySelectorAll("td:nth-child(4)");
 
   {
     let todos_horarios_aulas_td = tabela_frequencias.querySelectorAll("td.ifms-code");
 
-    todos_horarios_aulas_td.forEach((element) => char_eh_aula.push(element.innerText.indexOf('AULA')));
+    const situacoes_sem_aula = [
+      'Férias',
+      'Liberação',
+      'Afastamento'
+    ]
 
+    let comparaSituacoes = (index) => {
+      for(let i = 0; i < situacoes_sem_aula.length; i++){
+        if(situacao[index].innerText.indexOf(situacoes_sem_aula[i]) != -1){
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    for(let i = 0; i < todos_horarios_aulas_td.length; i++){
+      if(todos_horarios_aulas_td[i].innerText.indexOf('AULA') == -1 || comparaSituacoes(i)){
+        index_eh_aula.push(-1);
+      }else{
+        index_eh_aula.push(0);
+      }
+    }
+    
     let dia_semana_aula_strings = new Array;
     let indices_dia_semana = new Array;
 
-    let i;
-    for(i = 0; i < todas_datas_aulas_td.length; i++){
-      if(char_eh_aula[i] != -1){
+    for(let i = 0; i < todas_datas_aulas_td.length; i++){
+      if(index_eh_aula[i] != -1){
         let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
         if(!dia_semana_aula_strings.includes(data)){
           dia_semana_aula_strings.push(data);
@@ -25,8 +47,8 @@ char_eh_aula = new Array;
       }
     }
 
-    for(j in indices_dia_semana){
-      i = indices_dia_semana[j];
+    for(let j in indices_dia_semana){
+      let i = indices_dia_semana[j];
       
       const horarios_string = todos_horarios_aulas_td[i].innerText;
       const pat_split_horarios_strings = horarios_string.split('PAT')[0];
@@ -37,7 +59,7 @@ char_eh_aula = new Array;
       let intervalos_de_tempo_dia = new Array;
 
       let index = 0;
-      for(k in barra_split_horarios_strings){
+      for(let k in barra_split_horarios_strings){
         let inicio_horario = barra_split_horarios_strings[k].split('-')[0];
         let fim_horario = barra_split_horarios_strings[k].split('-')[1];
         
@@ -130,10 +152,10 @@ char_eh_aula = new Array;
   {
     const todos_horarios_entrada_saida_td = tabela_frequencias.querySelectorAll("td:nth-child(2)")
     
-    for(i = 0; i < todos_horarios_entrada_saida_td.length; i++){
-      if(char_eh_aula[i] != -1){
-        const entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
-        const dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
+    for(let i = 0; i < todos_horarios_entrada_saida_td.length; i++){
+      const entrada_saida = todos_horarios_entrada_saida_td[i].innerText.split(/(?:E:|S:)/).filter(e2 => e2 !== '' && !/^Sem/i.test(e2));
+      const dia_data_string = todas_datas_aulas_td[i].innerText.split('\n').filter(e => e !== '');
+      if(index_eh_aula[i] != -1){
         if(entrada_saida.length != 0 && entrada_saida.length % 2 == 0){
           const dia_horarios_regulares = horarios_regulares[dia_data_string[1]];
           let bool = true;
@@ -163,6 +185,10 @@ char_eh_aula = new Array;
           }else{
             dias_regulares_irregulares.set(dia_data_string[0],['Regular',dia_data_string[1],entrada_saida]);
           }
+        }
+      }else{
+        if(entrada_saida.length != 0){
+          dias_regulares_irregulares.set(dia_data_string[0],['Irregular',dia_data_string[1],entrada_saida]);
         }
       }
     }
