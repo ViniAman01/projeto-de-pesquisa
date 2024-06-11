@@ -37,14 +37,30 @@ index_eh_aula = new Array;
     let dia_semana_aula_strings = new Array;
     let indices_dia_semana = new Array;
 
-    for(let i = 0; i < todas_datas_aulas_td.length; i++){
+    let dias_semana = {
+      'Segunda-feira': 0,
+      'Terça-feira': 0,
+      'Quarta-feira': 0,
+      'Quinta-feira': 0,
+      'Sexta-feira': 0,
+      'Sábado': 0,
+      'Domingo': 0
+    }
+
+    let i = 0;
+
+    let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
+
+    while(dias_semana[data] != 2){
       if(index_eh_aula[i] != -1){
-        let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
-        if(!dia_semana_aula_strings.includes(data)){
+        data = todas_datas_aulas_td[i].innerText.split('\n')[2];
+        dias_semana[data]++;
+        if(dias_semana[data] != 2 && !dia_semana_aula_strings.includes(data)){
           dia_semana_aula_strings.push(data);
           indices_dia_semana.push(i);
         }
       }
+      i++;
     }
 
     for(let j in indices_dia_semana){
@@ -180,11 +196,7 @@ index_eh_aula = new Array;
           }
         }
         else{
-          if(entrada_saida.length != 0 && entrada_saida.length % 3 == 0){
             dias_regulares_irregulares.set(dia_data_string[0],['Irregular',dia_data_string[1],entrada_saida]);
-          }else{
-            dias_regulares_irregulares.set(dia_data_string[0],['Regular',dia_data_string[1],entrada_saida]);
-          }
         }
       }else{
         if(entrada_saida.length != 0){

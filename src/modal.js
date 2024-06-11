@@ -226,31 +226,34 @@ function createTable(dias_regulares_irregulares_map)
     const regularidade = value[0];
     const dia_semana = value[1];
     const dia_horarios_regulares = horarios_regulares[dia_semana];
+
+    const e_s_array = value[2];
+
+    const linha = tbody.insertRow()
+    const data_celula = linha.insertCell(0); 
+    const dia_semana_celula = linha.insertCell(1); 
+    const regularidade_celula = linha.insertCell(2); 
+    const e_s_celula = linha.insertCell(3);
+    const dia_horarios_regulares_element = linha.insertCell(4);
+
+    const data_string =  data;
+
+    criaCelulaES(e_s_array,e_s_celula);
+    
+    data_celula.innerHTML = data_string;
+    dia_semana_celula.innerText = dia_semana;
+    regularidade_celula.innerText = regularidade;
+
     if(dia_horarios_regulares){
-      const e_s_array = value[2];
-
-      const linha = tbody.insertRow()
-      const data_celula = linha.insertCell(0); 
-      const dia_semana_celula = linha.insertCell(1); 
-      const regularidade_celula = linha.insertCell(2); 
-      const e_s_celula = linha.insertCell(3);
-      const dia_horarios_regulares_element = linha.insertCell(4);
-
-      const data_string =  data;
-
-      criaCelulaES(e_s_array,e_s_celula);
-
       let dia_horarios_regulares_string = '';
       dia_horarios_regulares.forEach(e => {
         dia_horarios_regulares_string += e[0] + ' - ' + e[1] + '<br>';
       });
-
-      
-      data_celula.innerHTML = data_string;
-      dia_semana_celula.innerText = dia_semana;
-      regularidade_celula.innerText = regularidade;
       dia_horarios_regulares_element.innerHTML = dia_horarios_regulares_string;
+    }else{
+      dia_horarios_regulares_element.innerHTML = '';
     }
+
   });
 
   document.getElementById("tabela-irregulares").insertAdjacentElement("beforeend",tbody);
