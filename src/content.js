@@ -37,30 +37,14 @@ index_eh_aula = new Array;
     let dia_semana_aula_strings = new Array;
     let indices_dia_semana = new Array;
 
-    let dias_semana = {
-      'Segunda-feira': 0,
-      'Terça-feira': 0,
-      'Quarta-feira': 0,
-      'Quinta-feira': 0,
-      'Sexta-feira': 0,
-      'Sábado': 0,
-      'Domingo': 0
-    }
-
-    let i = 0;
-
-    let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
-
-    while(dias_semana[data] != 2){
+    for(let i = 0; i < todas_datas_aulas_td.length; i++){
       if(index_eh_aula[i] != -1){
-        data = todas_datas_aulas_td[i].innerText.split('\n')[2];
-        dias_semana[data]++;
-        if(dias_semana[data] != 2 && !dia_semana_aula_strings.includes(data)){
+        let data = todas_datas_aulas_td[i].innerText.split('\n')[2];
+        if(!dia_semana_aula_strings.includes(data)){
           dia_semana_aula_strings.push(data);
           indices_dia_semana.push(i);
         }
       }
-      i++;
     }
 
     for(let j in indices_dia_semana){
