@@ -201,7 +201,13 @@ function adicionarHorario(element){
         td.firstChild.insertAdjacentElement('beforeend',e_s_div);
       }else{
         const e_s_div = criaES(' ' + value_novo_horario + '*',index_e_s_child);
-        e_s_div_childs[index_e_s_child].insertAdjacentElement('beforebegin',e_s_div);
+        console.log(e_s_div_childs);
+        if(e_s_div_childs[index_e_s_child]){
+          e_s_div_childs[index_e_s_child].insertAdjacentElement('beforebegin',e_s_div);
+        }else{
+          const div_es = criaDivES([value_novo_horario + '*']);
+          td.insertAdjacentElement('afterbegin',div_es);
+        }
       }
 
       e_s_array.splice(index_e_s_child,0,value_novo_horario + '*');

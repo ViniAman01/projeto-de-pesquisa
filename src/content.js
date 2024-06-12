@@ -201,6 +201,8 @@ index_eh_aula = new Array;
       }else{
         if(entrada_saida.length != 0){
           dias_regulares_irregulares.set(dia_data_string[0],['Irregular',dia_data_string[1],entrada_saida]);
+        }else{
+          dias_regulares_irregulares.set(dia_data_string[0],['Regular',dia_data_string[1],entrada_saida]);
         }
       }
     }
