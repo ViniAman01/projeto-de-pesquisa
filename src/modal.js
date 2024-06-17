@@ -231,7 +231,7 @@ function createTable(dias_regulares_irregulares_map)
   dias_regulares_irregulares_map.forEach((value,data) => {
     const regularidade = value[0];
     const dia_semana = value[1];
-    const dia_horarios_regulares = horarios_regulares[dia_semana];
+    const dia_horarios_regulares = value[3];
 
     const e_s_array = value[2];
 
